@@ -1,0 +1,5 @@
+.input__search:focus {
+	box-shadow: none !important;
+	border-color: #0d6efd !important;
+	/*	primary: #0d6efd, warning:#ffc107 */
+}
