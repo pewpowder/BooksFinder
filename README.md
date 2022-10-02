@@ -23,8 +23,8 @@ $ npm start
 </pre>
 or if you use yarn
 <pre>
-$ npm install
-$ npm start
+$ yarn install
+$ yarn start
 </pre>
 
 # License
