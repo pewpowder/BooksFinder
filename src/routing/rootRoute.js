@@ -4,7 +4,6 @@ import React from 'react';
 
 import BookCardList from '../components/BookCardList/BookCardList';
 import SingleBookPage from '../components/SingleBookPage/SingleBookPage';
-import SearchPanel from '../components/SearchPanel/SearchPanel';
 import ErrorPage from '../components/ErrorPage/ErrorPage';
 
 const router = createBrowserRouter([
@@ -15,16 +14,11 @@ const router = createBrowserRouter([
 		children: [
 			{
 				index: true,
-				element: (
-					<React.Fragment>
-						<SearchPanel/>
-						<BookCardList/>
-					</React.Fragment>)
+				element: <BookCardList/>,
 			},
 			{
 				path: '/book/:bookId',
 				element: <SingleBookPage/>,
-				//loader
 			}
 		]
 	},

@@ -5,7 +5,7 @@ import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { store } from './store/store';
 
-import router from './routing/RootRoute';
+import router from './routing/rootRoute';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';

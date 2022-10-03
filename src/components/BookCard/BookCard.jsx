@@ -1,32 +1,42 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-export default function BookCard() {
+export default function BookCard({bookId, bookInfo}) {
+	if (!bookInfo) {
+		throw new Error('No book info');
+	}
+
+	const {authors, imageLinks, publishedDate, publisher, title} = bookInfo;
+
 	return (
-		<div className="col mb-3">
-			<div className="card flex-row shadow-lg">
-				<img style={{width: '150px'}}
-						 src={require('../../assets/img/not-found.png')}
+		<div className="col-lg-6 col-12 mb-3">
+			<div style={{minHeight: '300px'}} className="card flex-row shadow-lg">
+				<img className="img-thumbnail"
+						 style={{maxWidth: '138px', maxHeight: '293px'}}
+						 src={imageLinks?.thumbnail ?? imageLinks?.smallThumbnail ??
+							 require('../../assets/img/not-found.png')}
 						 alt="cover book"/>
 				<div className="card-body">
 					<ul className="list-group">
 						<li className="list-group-item">
 							<h5 className="card-title">
-								Чистый код: создание, анализ и рефакторинг. Библиотека программиста
+								{title ?? 'unknown'}
 							</h5>
 						</li>
 						<li className="list-group-item">
-							<p className="card-text">Author: Мартин Роберт</p>
+							<p className="card-text">Authors: {authors ?? 'unknown'}</p>
 						</li>
 						<li className="list-group-item">
-							<p className="card-text">Publish date: 2013-05-30</p>
+							<p className="card-text">
+								Published date: {publishedDate ?? 'unknown'}</p>
 						</li>
 						<li className="list-group-item">
-							<p className="card-text">Publisher: "Издательский дом "Питер"</p>
+							<p className="card-text">Publisher: {publisher ?? 'unknown'}</p>
 						</li>
 						<li className="list-group-item">
-							<Link to="/book/id" className="btn btn-primary">
-								More
+							<Link to={`/book/${bookId}`}
+										className={`btn btn-primary ${bookId ? '' : 'disabled'}`}>
+								{'More'} {'>'}
 							</Link>
 						</li>
 					</ul>
@@ -35,17 +45,3 @@ export default function BookCard() {
 		</div>
 	);
 }
-
-/*
-	<ul className="list-group">
-		<li className="list-group-item">Title: Чистый код: создание, анализ и рефакторинг. Библиотека программиста</li>
-		<li className="list-group-item">Author: Мартин Роберт</li>
-		<li className="list-group-item">Publish date: 2013-05-30</li>
-		<li className="list-group-item">Publisher: "Издательский дом ""Питер"""</li>
-		<li className="list-group-item">
-			<Link to="/"
-						className="btn btn-warning">More
-			</Link>
-		</li>
-	</ul>
-* */
