@@ -14,5 +14,19 @@ What you need to install to use the software locally
 <ul>
   <li>NodeJs</li>
   <li>Npm or Yarn</li>
-  <li>Python</li>
 </ul>
+
+# Installation
+What you need to run the system locally you need these commands
+<pre>
+$ npm install
+$ npm run start
+</pre>
+or if you use yarn
+<pre>
+$ yarn install
+$ yarn run start
+</pre>
+
+#License
+Usage is provided under the MIT License. See LICENSE for the full details.
