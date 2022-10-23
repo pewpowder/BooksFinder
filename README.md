@@ -28,5 +28,5 @@ $ yarn install
 $ yarn run start
 </pre>
 
-#License
+# License
 Usage is provided under the MIT License. See LICENSE for the full details.
