@@ -4,7 +4,7 @@ import { fetchBooks } from '../../features/books/booksSlice';
 
 import style from './SearchPanel.module.css';
 
-const {input__search} = style;
+const { input__search } = style;
 
 export default function SearchPanel() {
 	const [query, setQuery] = useState('');
@@ -12,22 +12,33 @@ export default function SearchPanel() {
 	const dispatch = useDispatch();
 
 	const handleOnClick = () => {
-		if (query) {
-			dispatch(fetchBooks({query}));
+		if (query.trim()) {
+			dispatch(fetchBooks({ query }));
+		}
+	};
+
+	const handleOnKeyDown = (event) => {
+		if (event.key === 'Enter' && query.trim()) {
+			dispatch(fetchBooks({ query }));
 		}
 	};
 
 	return (
-		<div className="row mb-4">
-			<div className="input-group">
-				<input type="search"
-							 className={`${input__search} form-control bg-transparent`}
-							 value={query}
-							 onChange={(e) => setQuery(e.target.value)}
-							 placeholder="Type title, author or publisher ..."/>
-				<button type="button"
-								className="btn btn-primary"
-								onClick={handleOnClick}>
+		<div className='row mb-4'>
+			<div className='input-group'>
+				<input
+					type='search'
+					className={`${input__search} form-control bg-transparent`}
+					value={query}
+					onChange={(e) => setQuery(e.target.value)}
+					placeholder='Type title, author or publisher ...'
+					onKeyDown={handleOnKeyDown}
+				/>
+				<button
+					type='button'
+					className='btn btn-primary'
+					onClick={handleOnClick}
+				>
 					search
 				</button>
 			</div>

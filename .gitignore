@@ -2,6 +2,7 @@
 
 # enviroment
 .idea
+.vscode
 notes.txt
 
 # dependencies
@@ -21,6 +22,7 @@ notes.txt
 .env.development.local
 .env.test.local
 .env.production.local
+/src/config.js
 
 npm-debug.log*
 yarn-debug.log*
