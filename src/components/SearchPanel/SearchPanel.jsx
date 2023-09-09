@@ -13,13 +13,13 @@ export default function SearchPanel() {
 
 	const handleOnClick = () => {
 		if (query.trim()) {
-			dispatch(fetchBooks({ query }));
+			dispatch(fetchBooks(query));
 		}
 	};
 
 	const handleOnKeyDown = (event) => {
 		if (event.key === 'Enter' && query.trim()) {
-			dispatch(fetchBooks({ query }));
+			dispatch(fetchBooks(query));
 		}
 	};
 

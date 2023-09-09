@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 import { selectAllBooks } from '../../features/books/booksSlice';
 
 import BookCard from '../BookCard/BookCard';
-import { StatusEnum } from '../../services/statusEnum';
 import Spinner from '../Spinner/Spinner';
 
 export default function BookCardList() {
@@ -15,33 +14,36 @@ export default function BookCardList() {
 	let content;
 
 	if (error) {
-		content = (<div>O
-			ops, sorry something went wrong. Books not found, please try again
-		</div>);
+		content = (
+			<div>
+				O ops, sorry something went wrong. Books not found, please try again
+			</div>
+		);
 	}
 
-	if (status === StatusEnum.rejected) {
+	if (status === 'rejected') {
 		content = <div>Oops, sorry something went wrong. Request rejected</div>;
 	}
 
-	if (status === StatusEnum.pending) {
-		content = <Spinner/>;
+	if (status === 'pending') {
+		content = <Spinner />;
 	}
 
 	return (
-		content ?? <div className="row">
-			{
-				totalBooks
-					?
-					<span style={{fontSize: '14px'}}>About {totalBooks} books found</span>
-					: ''
-			}
-			{
-				books.map(book => {
-					const {id, volumeInfo} = book;
-					return <BookCard key={id} bookId={id} bookInfo={volumeInfo}/>;
-				})
-			}
-		</div>
+		content ?? (
+			<div className='row'>
+				{totalBooks ? (
+					<span style={{ fontSize: '14px' }}>
+						About {totalBooks} books found
+					</span>
+				) : (
+					''
+				)}
+				{books.map((book) => {
+					const { id, volumeInfo } = book;
+					return <BookCard key={id} bookId={id} bookInfo={volumeInfo} />;
+				})}
+			</div>
+		)
 	);
 }
