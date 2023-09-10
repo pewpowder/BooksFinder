@@ -1,17 +1,16 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
 import { selectAllBooks } from '../../features/books/booksSlice';
+import { useAppSelector } from 'redux-hooks';
 
 import BookCard from '../BookCard/BookCard';
 import Spinner from '../Spinner/Spinner';
 
 export default function BookCardList() {
-	const books = useSelector(selectAllBooks);
-	const totalBooks = useSelector((state) => state.books.totalBooks);
-	const status = useSelector((state) => state.books.status);
-	const error = useSelector((state) => state.books.error);
+	const books = useAppSelector(selectAllBooks);
+	const totalBooks = useAppSelector((state) => state.books.totalBooks);
+	const status = useAppSelector((state) => state.books.status);
+	const error = useAppSelector((state) => state.books.error);
 
-	let content;
+	let content: JSX.Element | undefined;
 
 	if (error) {
 		content = (
@@ -32,17 +31,16 @@ export default function BookCardList() {
 	return (
 		content ?? (
 			<div className='row'>
-				{totalBooks ? (
+				{status === 'succeeded' ? (
 					<span style={{ fontSize: '14px' }}>
 						About {totalBooks} books found
 					</span>
 				) : (
 					''
 				)}
-				{books.map((book) => {
-					const { id, volumeInfo } = book;
-					return <BookCard key={id} bookId={id} bookInfo={volumeInfo} />;
-				})}
+				{books.map((book) => (
+					<BookCard key={book.id} {...book} />
+				))}
 			</div>
 		)
 	);

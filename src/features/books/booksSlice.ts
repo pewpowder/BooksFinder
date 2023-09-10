@@ -29,6 +29,8 @@ export const fetchBooks = createAsyncThunk<Omit<BookResponse, 'kind'>, string>(
 		const res = await getBooks(correctValue);
 		const { items, totalItems } = res;
 
+		console.log(res);
+
 		return {
 			items,
 			totalItems,
@@ -48,7 +50,8 @@ const booksSlice = createSlice({
 			})
 			.addCase(fetchBooks.fulfilled, (state, action) => {
 				state.status = 'succeeded';
-				booksAdapter.setAll(state, action.payload.items);
+				// The server may not be able to return the books
+				booksAdapter.setAll(state, action.payload.items ?? {});
 				state.totalBooks = action.payload.totalItems;
 			})
 			.addCase(fetchBooks.rejected, (state) => {

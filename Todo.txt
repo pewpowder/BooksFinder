@@ -2,6 +2,6 @@
 2. Implement book loading when we reached the end or with the button.
 3. Refactor on semantic tags
 4. Add themes
-5. (Optional) Add CSS grid instead bootstrap
+5. Rewrite styles (Remove bootstrap)
 6. Learn how fetch works
 7. Check how to correct validate errors in JS

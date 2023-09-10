@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { fetchBooks } from '../../features/books/booksSlice';
+import { useAppDispatch } from 'redux-hooks';
 
 import style from './SearchPanel.module.css';
 
@@ -9,7 +9,7 @@ const { input__search } = style;
 export default function SearchPanel() {
 	const [query, setQuery] = useState('');
 
-	const dispatch = useDispatch();
+	const dispatch = useAppDispatch();
 
 	const handleOnClick = () => {
 		if (query.trim()) {
@@ -17,7 +17,7 @@ export default function SearchPanel() {
 		}
 	};
 
-	const handleOnKeyDown = (event) => {
+	const handleOnKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
 		if (event.key === 'Enter' && query.trim()) {
 			dispatch(fetchBooks(query));
 		}

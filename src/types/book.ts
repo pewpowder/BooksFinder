@@ -1,19 +1,27 @@
-export type Book = {
-	id: string;
-	volumeInfo: {
-		title: string;
-		authors: string[];
-		imageLinks: {
-			smallThumbnail: string;
-			thumbnail: string;
-		};
-		publishedDate: string;
-		publisher: string;
-	};
-};
-
 export type BookResponse = {
 	items: Book[];
 	kind: string;
 	totalItems: number;
+};
+
+export type Book = {
+	id: string;
+	volumeInfo: VolumeInfo;
+};
+
+export type VolumeInfo = {
+	title: string;
+	authors?: string[];
+	imageLinks?: {
+		smallThumbnail?: string;
+		thumbnail?: string;
+	};
+	publishedDate?: string;
+	publisher?: string;
+	averageRating?: number;
+	pageCount?: number;
+	language?: string;
+	previewLink?: string;
+	categories?: string[];
+	description?: string;
 };
