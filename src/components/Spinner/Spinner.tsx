@@ -1,4 +1,4 @@
-export default function Spinner() {
+function Spinner() {
 	return (
 		<div className='d-flex justify-content-center'>
 			<div className='spinner-border text-primary' role='status'>
@@ -7,3 +7,5 @@ export default function Spinner() {
 		</div>
 	);
 }
+
+export default Spinner;

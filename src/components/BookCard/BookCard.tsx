@@ -3,7 +3,7 @@ import { Book } from 'types';
 
 interface BookCardProps extends Book {}
 
-export default function BookCard({ id, volumeInfo }: BookCardProps) {
+function BookCard({ id, volumeInfo }: BookCardProps) {
 	if (!volumeInfo) {
 		throw new Error('No book info');
 	}
@@ -11,14 +11,10 @@ export default function BookCard({ id, volumeInfo }: BookCardProps) {
 	const { authors, imageLinks, publishedDate, publisher, title } = volumeInfo;
 
 	return (
-		<div className='col-lg-6 col-12 mb-3'>
-			<div
-				style={{ minHeight: '300px', maxWidth: '600px' }}
-				className='card flex-row shadow-lg'
-			>
+		<div className=''>
+			<div className=''>
 				<img
-					className='img-thumbnail'
-					style={{ maxWidth: '138px', height: '300px' }}
+					className=''
 					src={
 						imageLinks?.thumbnail ??
 						imageLinks?.smallThumbnail ??
@@ -26,31 +22,22 @@ export default function BookCard({ id, volumeInfo }: BookCardProps) {
 					}
 					alt='cover book'
 				/>
-				<div className='card-body' style={{ maxWidth: '70%' }}>
-					<ul className='list-group'>
-						<li className='list-group-item '>
-							<h5 className='card-title text-truncate'>{title}</h5>
+				<div className=''>
+					<ul className=''>
+						<li className=''>
+							<h5 className=''>{title}</h5>
 						</li>
-						<li className='list-group-item'>
-							<p className='card-text text-truncate'>
-								Authors: {authors ?? 'unknown'}
-							</p>
+						<li className=''>
+							<p className=''>Authors: {authors ?? 'unknown'}</p>
 						</li>
-						<li className='list-group-item'>
-							<p className='card-text text-truncate'>
-								Published date: {publishedDate ?? 'unknown'}
-							</p>
+						<li className=''>
+							<p className=''>Published date: {publishedDate ?? 'unknown'}</p>
 						</li>
-						<li className='list-group-item'>
-							<p className='card-text text-truncate'>
-								Publisher: {publisher ?? 'unknown'}
-							</p>
+						<li className=''>
+							<p className=''>Publisher: {publisher ?? 'unknown'}</p>
 						</li>
-						<li className='list-group-item'>
-							<Link
-								to={`/book/${id}`}
-								className={`btn btn-primary ${id ? '' : 'disabled'}`}
-							>
+						<li className=''>
+							<Link to={`/details/${id}`} className={`${id ? '' : 'disabled'}`}>
 								{'More >'}
 							</Link>
 						</li>
@@ -60,3 +47,7 @@ export default function BookCard({ id, volumeInfo }: BookCardProps) {
 		</div>
 	);
 }
+
+function DetailsList({ volumeInfo }: Pick<BookCardProps, 'volumeInfo'>) {}
+
+export default BookCard;

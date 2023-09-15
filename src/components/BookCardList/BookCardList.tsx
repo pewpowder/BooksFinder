@@ -4,7 +4,7 @@ import { useAppSelector } from 'redux-hooks';
 import BookCard from '../BookCard/BookCard';
 import Spinner from '../Spinner/Spinner';
 
-export default function BookCardList() {
+function BookCardList() {
 	const books = useAppSelector(selectAllBooks);
 	const totalBooks = useAppSelector((state) => state.books.totalBooks);
 	const status = useAppSelector((state) => state.books.status);
@@ -45,3 +45,5 @@ export default function BookCardList() {
 		)
 	);
 }
+
+export default BookCardList;

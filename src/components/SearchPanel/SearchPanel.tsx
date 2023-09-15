@@ -2,12 +2,10 @@ import React, { useState } from 'react';
 import { fetchBooks } from '../../features/books/booksSlice';
 import { useAppDispatch } from 'redux-hooks';
 
-import style from './SearchPanel.module.css';
+import styles from './SearchPanel.module.scss';
 
-const { input__search } = style;
-
-export default function SearchPanel() {
-	const [query, setQuery] = useState('');
+function SearchPanel() {
+	const [query, setQuery] = useState('clean code');
 
 	const dispatch = useAppDispatch();
 
@@ -24,24 +22,24 @@ export default function SearchPanel() {
 	};
 
 	return (
-		<div className='row mb-4'>
-			<div className='input-group'>
-				<input
-					type='search'
-					className={`${input__search} form-control bg-transparent`}
-					value={query}
-					onChange={(e) => setQuery(e.target.value)}
-					placeholder='Type title, author or publisher ...'
-					onKeyDown={handleOnKeyDown}
-				/>
-				<button
-					type='button'
-					className='btn btn-primary'
-					onClick={handleOnClick}
-				>
-					search
-				</button>
-			</div>
+		<div className={styles.wrapper}>
+			<input
+				type='search'
+				className={`${styles.search_input} form-control bg-transparent`}
+				value={query}
+				onChange={(e) => setQuery(e.target.value)}
+				placeholder='Type title, author or publisher ...'
+				onKeyDown={handleOnKeyDown}
+			/>
+			<button
+				type='button'
+				className={styles.search_button}
+				onClick={handleOnClick}
+			>
+				search
+			</button>
 		</div>
 	);
 }
+
+export default SearchPanel;

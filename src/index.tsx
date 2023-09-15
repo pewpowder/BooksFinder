@@ -7,8 +7,7 @@ import { store } from './store/store';
 
 import router from './routing/rootRoute';
 
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './index.css';
+import './index.scss';
 
 const container = document.getElementById('root') as HTMLElement;
 const root = createRoot(container);

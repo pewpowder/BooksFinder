@@ -1,4 +1,5 @@
-import { Link, useRouteError, isRouteErrorResponse } from 'react-router-dom';
+import ErrorComponent from 'components/ErrorComponent/ErrorComponent';
+import { useRouteError, isRouteErrorResponse } from 'react-router-dom';
 
 export default function ErrorPage() {
 	const error = useRouteError();
@@ -11,26 +12,5 @@ export default function ErrorPage() {
 		status = error.status;
 	}
 
-	return (
-		<div className='container'>
-			<div
-				style={{ height: '100vh' }}
-				className='d-flex justify-content-center align-items-center'
-			>
-				<div className='card'>
-					<div className='card-body'>
-						<h5 className='card-title'>
-							{statusText} {status}
-						</h5>
-						<p className='card-text'>
-							{'Something went wrong, please come back to home page'}
-						</p>
-						<Link to='/' className='link-primary'>
-							Go back to home page
-						</Link>
-					</div>
-				</div>
-			</div>
-		</div>
-	);
+	return <ErrorComponent statusText={statusText} status={status} />;
 }
