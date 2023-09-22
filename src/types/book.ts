@@ -5,7 +5,7 @@ export type BookResponse = {
 };
 
 export type Book = {
-	id: string;
+	id: BookId;
 	volumeInfo: VolumeInfo;
 };
 
@@ -25,3 +25,5 @@ export type VolumeInfo = {
 	categories?: string[];
 	description?: string;
 };
+
+export type BookId = string;

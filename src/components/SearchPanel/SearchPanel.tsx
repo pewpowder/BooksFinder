@@ -1,31 +1,34 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { fetchBooks } from '../../features/books/booksSlice';
 import { useAppDispatch } from 'redux-hooks';
 
 import styles from './SearchPanel.module.scss';
 
 function SearchPanel() {
-	const [query, setQuery] = useState('clean code');
-
+	const [query, setQuery] = useState('');
 	const dispatch = useAppDispatch();
+	const navigate = useNavigate();
 
 	const handleOnClick = () => {
 		if (query.trim()) {
 			dispatch(fetchBooks(query));
+			navigate('/');
 		}
 	};
 
 	const handleOnKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
 		if (event.key === 'Enter' && query.trim()) {
 			dispatch(fetchBooks(query));
+			navigate('/');
 		}
 	};
 
 	return (
-		<div className={styles.wrapper}>
+		<div className={styles['wrapper']}>
 			<input
 				type='search'
-				className={`${styles.search_input} form-control bg-transparent`}
+				className={`${styles['search-input']}`}
 				value={query}
 				onChange={(e) => setQuery(e.target.value)}
 				placeholder='Type title, author or publisher ...'
@@ -33,10 +36,10 @@ function SearchPanel() {
 			/>
 			<button
 				type='button'
-				className={styles.search_button}
+				className={styles['search-button']}
 				onClick={handleOnClick}
 			>
-				search
+				<span>search</span>
 			</button>
 		</div>
 	);

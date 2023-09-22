@@ -6,13 +6,13 @@ import styles from './HomePage.module.scss';
 
 function HomePage() {
 	return (
-		<div className={styles.container}>
-			<div className={styles.header}>
-				<Link to='/' className={styles.home_link}>
-					Jutsu
+		<div className={styles['container']}>
+			<header className={styles['header']}>
+				<Link to='/' className={styles['home-link']}>
+					JUTSU
 				</Link>
 				<ThemeToggle />
-			</div>
+			</header>
 			<SearchPanel />
 			<Outlet />
 		</div>

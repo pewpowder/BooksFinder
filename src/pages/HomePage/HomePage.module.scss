@@ -9,10 +9,10 @@
 	justify-content: space-between;
 }
 
-.home_link {
+.home-link {
 	font-size: 2rem;
 	font-style: italic;
-	font-weight: 500;
+	font-weight: var(--fw-normal);
 	color: var(--colors-text);
 	text-decoration: none;
 }

@@ -1,14 +1,27 @@
-1. Logo should be clickable link that address to home page.
+1. Logo should be clickable link that address to home page. +
 2. Implement book loading when we reached the end or with the button.
-3. Refactor on semantic tags.
-4. Add themes.
-5. Rewrite styles (Remove bootstrap).
+3. Refactor on semantic tags. 
+4. Add themes. +
+5. Rewrite styles (Remove bootstrap). +
 6. Learn how fetch works.
 7. Check how to correct validate errors in JS.
-8. Fix error when we reload details page app crashed.
+8. Fix error when we reload details page app crashed. +
 9. SearchPanel doesn't work from DetailsPage (Or remove or fix)
-10. Add current theme in localStorage
+10. Add current theme in localStorage +
 
 // Project structure
 1. Components shouldn't contain any logic inside it.
 2. 
+
+
+/*
+	tags
+		1. time
+		2. main
+		3. nav
+		4. header
+		5. section
+		6. article
+		
+		<a target="_blank" href="https://icons8.com/icon/114010/books">Books</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
+*/

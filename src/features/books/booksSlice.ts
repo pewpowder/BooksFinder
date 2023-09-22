@@ -26,10 +26,9 @@ export const fetchBooks = createAsyncThunk<Omit<BookResponse, 'kind'>, string>(
 	'books/fetchBooks',
 	async (query) => {
 		const correctValue = query.trim().split(' ').join('+');
+
 		const res = await getBooks(correctValue);
 		const { items, totalItems } = res;
-
-		console.log(res);
 
 		return {
 			items,

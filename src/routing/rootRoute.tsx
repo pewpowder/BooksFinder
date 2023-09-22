@@ -3,7 +3,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import BookCardList from 'components/BookCardList/BookCardList';
 import ErrorPage from 'pages/ErrorPage/ErrorPage';
 import HomePage from 'pages/HomePage/HomePage';
-import DetailsPage from 'pages/DetailsPage/DetailsPage';
+import BookDetailsPage from 'pages/BookDetailsPage/BookDetailsPage';
 
 const router = createBrowserRouter([
 	{
@@ -15,12 +15,11 @@ const router = createBrowserRouter([
 				index: true,
 				element: <BookCardList />,
 			},
+			{
+				path: '/details/:bookId',
+				element: <BookDetailsPage />,
+			},
 		],
-	},
-	{
-		path: '/details/:bookId',
-		element: <DetailsPage />,
-		errorElement: <ErrorPage />,
 	},
 ]);
 

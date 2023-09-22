@@ -1,5 +1,8 @@
 import { Link } from 'react-router-dom';
 import { Book } from 'types';
+import NotFoundImg from '../../assets/img/not-found.png';
+
+import styles from './BookCard.module.scss';
 
 interface BookCardProps extends Book {}
 
@@ -11,39 +14,34 @@ function BookCard({ id, volumeInfo }: BookCardProps) {
 	const { authors, imageLinks, publishedDate, publisher, title } = volumeInfo;
 
 	return (
-		<div className=''>
-			<div className=''>
-				<img
-					className=''
-					src={
-						imageLinks?.thumbnail ??
-						imageLinks?.smallThumbnail ??
-						require('../../assets/img/not-found.png')
-					}
-					alt='cover book'
-				/>
-				<div className=''>
-					<ul className=''>
-						<li className=''>
-							<h5 className=''>{title}</h5>
-						</li>
-						<li className=''>
-							<p className=''>Authors: {authors ?? 'unknown'}</p>
-						</li>
-						<li className=''>
-							<p className=''>Published date: {publishedDate ?? 'unknown'}</p>
-						</li>
-						<li className=''>
-							<p className=''>Publisher: {publisher ?? 'unknown'}</p>
-						</li>
-						<li className=''>
-							<Link to={`/details/${id}`} className={`${id ? '' : 'disabled'}`}>
-								{'More >'}
-							</Link>
-						</li>
-					</ul>
-				</div>
-			</div>
+		<div className={styles['card']}>
+			<img
+				className={styles['card-img']}
+				src={imageLinks?.smallThumbnail ?? NotFoundImg}
+				alt='book cover'
+			/>
+			<ul className={styles['card-list']}>
+				<li className={styles['card-list-item']}>
+					<h5 className={styles['card-title']}>{title}</h5>
+				</li>
+				<li className={styles['card-list-item']}>
+					<span>Authors:</span> {authors ?? 'unknown'}
+				</li>
+				<li className={styles['card-list-item']}>
+					<span>Published date:</span> <time>{publishedDate ?? 'unknown'}</time>
+				</li>
+				<li className={styles['card-list-item']}>
+					<span>Publisher:</span> {publisher ?? 'unknown'}
+				</li>
+				<li className={styles['card-list-item']}>
+					<Link
+						to={`/details/${id}`}
+						className={`${styles['card-link']} ${id ? '' : 'hide'}`}
+					>
+						{'More >'}
+					</Link>
+				</li>
+			</ul>
 		</div>
 	);
 }

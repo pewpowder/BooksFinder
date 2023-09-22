@@ -4,11 +4,18 @@ import { useAppSelector } from 'redux-hooks';
 import BookCard from '../BookCard/BookCard';
 import Spinner from '../Spinner/Spinner';
 
+import styles from './BookCardList.module.scss';
+import {
+	selectBooksError,
+	selectBooksStatus,
+	selectTotalBooks,
+} from 'features/books/books-selectors';
+
 function BookCardList() {
 	const books = useAppSelector(selectAllBooks);
-	const totalBooks = useAppSelector((state) => state.books.totalBooks);
-	const status = useAppSelector((state) => state.books.status);
-	const error = useAppSelector((state) => state.books.error);
+	const totalBooks = useAppSelector(selectTotalBooks);
+	const status = useAppSelector(selectBooksStatus);
+	const error = useAppSelector(selectBooksError);
 
 	let content: JSX.Element | undefined;
 
@@ -20,28 +27,26 @@ function BookCardList() {
 		);
 	}
 
-	if (status === 'rejected') {
-		content = <div>Oops, sorry something went wrong. Request rejected</div>;
-	}
-
 	if (status === 'pending') {
 		content = <Spinner />;
+	} else if (status === 'rejected') {
+		content = <div>Oops, sorry something went wrong. Request rejected</div>;
 	}
 
 	return (
 		content ?? (
-			<div className='row'>
-				{status === 'succeeded' ? (
-					<span style={{ fontSize: '14px' }}>
+			<article className={styles['container']}>
+				{status === 'succeeded' && (
+					<span className={styles['books-count']}>
 						About {totalBooks} books found
 					</span>
-				) : (
-					''
 				)}
-				{books.map((book) => (
-					<BookCard key={book.id} {...book} />
-				))}
-			</div>
+				<div className={styles['card-list']}>
+					{books.map((book) => (
+						<BookCard key={book.id} {...book} />
+					))}
+				</div>
+			</article>
 		)
 	);
 }

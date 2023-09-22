@@ -1,8 +1,8 @@
 function Spinner() {
 	return (
-		<div className='d-flex justify-content-center'>
-			<div className='spinner-border text-primary' role='status'>
-				<span className='visually-hidden'>Loading ...</span>
+		<div className=''>
+			<div className='' role='status'>
+				<span className=''>Loading ...</span>
 			</div>
 		</div>
 	);

@@ -1,0 +1,9 @@
+.container {
+	display: grid;
+	grid-template-columns: 2fr 4fr;
+	gap: 3rem;
+
+	@media (max-width: 767px) {
+		grid-template-columns: 1fr;
+	}
+}

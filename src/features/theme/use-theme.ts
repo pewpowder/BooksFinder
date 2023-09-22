@@ -6,8 +6,6 @@ function useTheme(): [Themes, () => void] {
 	const { theme } = useAppSelector(selectTheme);
 	const dispatch = useAppDispatch();
 
-	console.log(setTheme('light'));
-
 	const toggleTheme = () =>
 		dispatch(setTheme(theme === 'light' ? 'dark' : 'light'));
 
