@@ -17,37 +17,29 @@ function BookCardList() {
 	const status = useAppSelector(selectBooksStatus);
 	const error = useAppSelector(selectBooksError);
 
-	let content: JSX.Element | undefined;
-
 	if (error) {
-		content = (
-			<div>
-				O ops, sorry something went wrong. Books not found, please try again
-			</div>
-		);
+		return <div>{error}</div>;
 	}
 
 	if (status === 'pending') {
-		content = <Spinner />;
+		return <Spinner />;
 	} else if (status === 'rejected') {
-		content = <div>Oops, sorry something went wrong. Request rejected</div>;
+		return <div>Oops, sorry something went wrong. Request rejected</div>;
 	}
 
 	return (
-		content ?? (
-			<article className={styles['container']}>
-				{status === 'succeeded' && (
-					<span className={styles['books-count']}>
-						About {totalBooks} books found
-					</span>
-				)}
-				<div className={styles['card-list']}>
-					{books.map((book) => (
-						<BookCard key={book.id} {...book} />
-					))}
-				</div>
-			</article>
-		)
+		<div className={styles['container']}>
+			{status === 'succeeded' && (
+				<span className={styles['books-count']}>
+					About {totalBooks} books found
+				</span>
+			)}
+			<section className={styles['card-list']}>
+				{books.map((book) => (
+					<BookCard key={book.id} {...book} />
+				))}
+			</section>
+		</div>
 	);
 }
 

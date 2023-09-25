@@ -1,0 +1,49 @@
+$color: #0a4b78;
+
+.container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	height: calc(100vh);
+	font-size: var(--fs-md);
+	color: #0a4b78;
+
+	& > div {
+		border: 1px solid $color;
+		border-radius: var(--radius);
+		max-width: 600px;
+		padding: 1rem;
+		box-shadow: #959da56b 0px 0px 8px;
+	}
+}
+
+.error-status {
+	font-size: 1.5rem;
+	margin: 0 0 1rem;
+}
+
+.error-message {
+	margin: 0 0 0.75rem;
+}
+
+.link {
+	display: inline-block;
+	text-decoration: none;
+	color: $color;
+
+	padding: 0.2rem;
+	border: 1px solid $color;
+	border-radius: var(--radius);
+	transition: 200ms transform ease-in;
+
+	&:focus {
+		outline: 2px solid $color;
+		border-color: transparent;
+	}
+
+	&:hover {
+		transform: scale(1.05);
+		font-weight: var(--fw-normal);
+	}
+}

@@ -8,12 +8,12 @@ function BookDetails({ volumeInfo }: BookDetailsProps) {
 	const { description, previewLink } = volumeInfo;
 
 	return (
-		<article className={styles['container']}>
+		<section className={styles['container']}>
 			<BookDetailsCard volumeInfo={volumeInfo} />
 			{description && (
 				<BookDescription description={description} previewLink={previewLink} />
 			)}
-		</article>
+		</section>
 	);
 }
 

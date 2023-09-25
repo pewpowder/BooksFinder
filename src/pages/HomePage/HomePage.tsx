@@ -13,8 +13,10 @@ function HomePage() {
 				</Link>
 				<ThemeToggle />
 			</header>
-			<SearchPanel />
-			<Outlet />
+			<main>
+				<SearchPanel />
+				<Outlet />
+			</main>
 		</div>
 	);
 }

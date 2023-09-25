@@ -14,7 +14,7 @@ function BookCard({ id, volumeInfo }: BookCardProps) {
 	const { authors, imageLinks, publishedDate, publisher, title } = volumeInfo;
 
 	return (
-		<div className={styles['card']}>
+		<article className={styles['card']}>
 			<img
 				className={styles['card-img']}
 				src={imageLinks?.smallThumbnail ?? NotFoundImg}
@@ -36,13 +36,13 @@ function BookCard({ id, volumeInfo }: BookCardProps) {
 				<li className={styles['card-list-item']}>
 					<Link
 						to={`/details/${id}`}
-						className={`${styles['card-link']} ${id ? '' : 'hide'}`}
+						className={`${styles['card-link']} ${id ? '' : styles['disable']}`}
 					>
 						{'More >'}
 					</Link>
 				</li>
 			</ul>
-		</div>
+		</article>
 	);
 }
 

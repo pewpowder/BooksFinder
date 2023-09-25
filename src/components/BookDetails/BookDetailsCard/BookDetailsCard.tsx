@@ -21,7 +21,7 @@ function BookDetailsCard({ volumeInfo }: BookDetailsCardProps) {
 	//?? imageLinks?.smallThumbnail
 
 	return (
-		<section className={styles['card']}>
+		<article className={styles['card']}>
 			<h5 className={styles['card-title']}>{title}</h5>
 			<img
 				className={styles['card-img']}
@@ -52,7 +52,7 @@ function BookDetailsCard({ volumeInfo }: BookDetailsCardProps) {
 					<span>Rating (avg):</span> {averageRating ?? 'unknown'}
 				</li>
 			</ul>
-		</section>
+		</article>
 	);
 }
 

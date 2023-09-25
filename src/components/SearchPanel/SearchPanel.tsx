@@ -6,7 +6,7 @@ import { useAppDispatch } from 'redux-hooks';
 import styles from './SearchPanel.module.scss';
 
 function SearchPanel() {
-	const [query, setQuery] = useState('');
+	const [query, setQuery] = useState('Clean code');
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 
@@ -19,13 +19,15 @@ function SearchPanel() {
 
 	const handleOnKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
 		if (event.key === 'Enter' && query.trim()) {
+			console.log(query);
+
 			dispatch(fetchBooks(query));
 			navigate('/');
 		}
 	};
 
 	return (
-		<div className={styles['wrapper']}>
+		<section className={styles['wrapper']}>
 			<input
 				type='search'
 				className={`${styles['search-input']}`}
@@ -41,7 +43,7 @@ function SearchPanel() {
 			>
 				<span>search</span>
 			</button>
-		</div>
+		</section>
 	);
 }
 

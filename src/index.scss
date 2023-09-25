@@ -13,6 +13,9 @@
 	--radius: 6px;
 }
 
+$light-theme-color: #0a4b78;
+$dark-theme-color: #fff;
+
 body[data-theme='dark'] {
 	--colors-text: #fff;
 	--colors-bg: #202c37;
@@ -26,7 +29,7 @@ body[data-theme='light'] {
 	--colors-bg: #fafafa;
 	--border-color: #202c37;
 
-	--shadow: #959da533 0px 8px 24px;
+	--shadow: #959da56b 0px 0px 8px;
 }
 
 *,

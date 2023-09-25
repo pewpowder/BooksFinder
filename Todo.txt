@@ -1,13 +1,14 @@
 1. Logo should be clickable link that address to home page. +
 2. Implement book loading when we reached the end or with the button.
-3. Refactor on semantic tags. 
+3. Refactor on semantic tags.  +
 4. Add themes. +
 5. Rewrite styles (Remove bootstrap). +
 6. Learn how fetch works.
 7. Check how to correct validate errors in JS.
 8. Fix error when we reload details page app crashed. +
-9. SearchPanel doesn't work from DetailsPage (Or remove or fix)
+9. SearchPanel doesn't work from DetailsPage (Or remove or fix) +
 10. Add current theme in localStorage +
+11. Remember how rendering works.
 
 // Project structure
 1. Components shouldn't contain any logic inside it.

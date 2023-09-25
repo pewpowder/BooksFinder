@@ -10,6 +10,8 @@ function useBookDetails(id: BookId | undefined): Book | null {
 
 	useEffect(() => {
 		if (id) {
+			console.log('Dispatch');
+
 			dispatch(fetchBook(id));
 		}
 

@@ -72,6 +72,7 @@ $media-size: 1010px;
 	}
 }
 
-.hide {
-	display: none;
+.disable {
+	pointer-events: none;
+	opacity: 0.5;
 }

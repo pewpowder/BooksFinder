@@ -8,10 +8,12 @@ interface BookDescriptionProps {
 
 function BookDescription({ description, previewLink }: BookDescriptionProps) {
 	return (
-		<section>
-			<div className={styles['description']}>
+		<div>
+			<article className={styles['description']}>
 				<h2 className={styles['description-title']}>Book Description</h2>
-				<p className={styles['description-text']}>{description ?? 'unknown'}</p>
+				<p className={styles['description-text']}>
+					{description ?? 'no description'}
+				</p>
 				<div className={styles['links-wrapper']}>
 					<Link to='/' className={styles['link']}>
 						{'< Back'}
@@ -25,8 +27,8 @@ function BookDescription({ description, previewLink }: BookDescriptionProps) {
 						Read a sample
 					</a>
 				</div>
-			</div>
-		</section>
+			</article>
+		</div>
 	);
 }
 
