@@ -1,8 +1,8 @@
-import { selectAllBooks } from '../../features/books/booksSlice';
 import { useAppSelector } from 'redux-hooks';
-import BookCard from '../BookCard/BookCard';
-import Spinner from '../Spinner/Spinner';
+import BookCard from 'components/BookCard/BookCard';
+import Spinner from 'components/Spinner/Spinner';
 import {
+	selectAllBooks,
 	selectBooksError,
 	selectBooksStatus,
 	selectTotalBooks,
@@ -18,14 +18,18 @@ function BookCardList() {
 	console.log('Book card list rendered');
 
 	if (error) {
-		return <div>{error}</div>;
+		return <div>{'Render error component if i can get here'}</div>;
 	}
 
 	if (status === 'pending') {
 		return <Spinner />;
-	} else if (status === 'rejected') {
-		return <div>Oops, sorry something went wrong. Request rejected</div>;
 	}
+
+	if (totalBooks === 0 && status === 'succeeded') {
+		return <div>Oops, looks like no books were found</div>;
+	}
+
+	console.log(books);
 
 	return (
 		totalBooks !== 0 && (

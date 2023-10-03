@@ -1,22 +1,23 @@
 import { Link, Outlet } from 'react-router-dom';
 import SearchPanel from 'components/SearchPanel/SearchPanel';
 import ThemeToggle from 'components/ThemeToggle/ThemeToggle';
-import { throttle } from 'services/booksServices';
-import { useEffect, useState } from 'react';
+import { throttle } from 'services/services';
+import { useEffect, useRef, useState } from 'react';
 import { useAppDispatch } from 'redux-hooks';
-import { fetchBooks } from 'features/books/booksSlice';
+import { fetchBooks, resetBooks } from 'features/books/booksSlice';
 import styles from './HomePage.module.scss';
 
 function HomePage() {
 	const [query, setQuery] = useState('Clean code');
-	const [startIndex, setStartIndex] = useState(0);
-
+	const startIndexRef = useRef(0);
 	const dispatch = useAppDispatch();
 
-	const requestBooks = () => dispatch(fetchBooks({ query, startIndex }));
-	const updateQueryData = (newQuery: string) => {
-		setQuery(newQuery);
-		setStartIndex(0);
+	const requestBooks = () => {
+		dispatch(fetchBooks({ query, startIndex: startIndexRef.current }));
+	};
+	const resetPreviousBooks = () => {
+		startIndexRef.current = 0;
+		resetBooks();
 	};
 
 	useEffect(() => {
@@ -27,8 +28,8 @@ function HomePage() {
 			const threshold = offsetHeight - screenHeight / 3;
 
 			if (window.scrollY + screenHeight >= threshold) {
-				setStartIndex((prevValue) => prevValue + 12);
-				// requestBooks();
+				startIndexRef.current += 12;
+				requestBooks();
 			}
 		};
 
@@ -64,6 +65,7 @@ function HomePage() {
 					requestBooks={requestBooks}
 					query={query}
 					setQuery={setQuery}
+					resetPreviousBooks={resetPreviousBooks}
 				/>
 				<Outlet />
 			</main>

@@ -1,15 +1,16 @@
 export type BookResponse = {
-	items: Book[];
-	kind: string;
+	items: Book[] | undefined;
 	totalItems: number;
 };
+
+export type BookId = string;
 
 export type Book = {
 	id: BookId;
 	volumeInfo: VolumeInfo;
 };
 
-export type VolumeInfo = {
+type VolumeInfo = {
 	title: string;
 	authors?: string[];
 	imageLinks?: {
@@ -26,4 +27,7 @@ export type VolumeInfo = {
 	description?: string;
 };
 
-export type BookId = string;
+export type ErrorType = {
+	statusText: string;
+	status: number;
+};

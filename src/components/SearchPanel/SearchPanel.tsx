@@ -7,17 +7,17 @@ interface SearchPanelProps {
 	requestBooks: (query: string, startIndex?: number) => void;
 	query: string;
 	setQuery: React.Dispatch<React.SetStateAction<string>>;
-	// updateQueryData: (query: string) => void;
+	resetPreviousBooks: () => void;
 }
 
 function SearchPanel(props: SearchPanelProps) {
-	const { requestBooks, query, setQuery /*updateQueryData*/ } = props;
+	const { requestBooks, query, setQuery, resetPreviousBooks } = props;
 	const navigate = useNavigate();
 
 	const handleClick = () => {
 		if (query.trim()) {
 			requestBooks(query);
-			// updateQueryData();
+			resetPreviousBooks();
 			navigate('/books');
 		}
 	};
@@ -25,12 +25,10 @@ function SearchPanel(props: SearchPanelProps) {
 	const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
 		if (event.key === 'Enter' && query.trim()) {
 			requestBooks(query);
-			// updateQueryData();
+			resetPreviousBooks();
 			navigate('/books');
 		}
 	};
-
-	console.log('Search panel rendered');
 
 	return (
 		<section className={styles['wrapper']}>

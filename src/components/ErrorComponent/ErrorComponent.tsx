@@ -1,9 +1,7 @@
 import { Link } from 'react-router-dom';
 import styles from './ErrorComponent.module.scss';
-interface ErrorComponentProps {
-	statusText: string;
-	status: number;
-}
+import { ErrorType } from 'types';
+interface ErrorComponentProps extends ErrorType {}
 
 function ErrorComponent({ statusText, status }: ErrorComponentProps) {
 	return (
@@ -13,7 +11,7 @@ function ErrorComponent({ statusText, status }: ErrorComponentProps) {
 					{statusText} {status}
 				</h5>
 				<p className={styles['error-message']}>
-					{'Something went wrong, please come back to home page'}
+					{`${statusText}, please come back to home page`}
 				</p>
 				<Link to='/' className={styles['link']}>
 					Go back to home page

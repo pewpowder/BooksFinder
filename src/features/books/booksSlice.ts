@@ -1,36 +1,35 @@
-import {
-	createSlice,
-	createAsyncThunk,
-	createEntityAdapter,
-} from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-import { getBooks } from '../../services/booksServices';
-import { Book, BookResponse } from 'types';
-import { RootState } from 'store/store';
+import { FETCH_BOOKS } from 'services/api';
+import { Book, BookResponse, ErrorType } from 'types';
 
-const booksAdapter = createEntityAdapter<Book>();
-
-type InitialState = {
+interface InitialState {
+	books: Book[];
 	status: 'idle' | 'pending' | 'succeeded' | 'rejected';
-	error: string | null;
+	error: ErrorType | null;
 	totalBooks: number;
-};
+}
 
-const initialState = booksAdapter.getInitialState<InitialState>({
+const initialState: InitialState = {
+	books: [],
 	status: 'idle',
 	error: null,
 	totalBooks: 0,
-});
+};
 
 export const fetchBooks = createAsyncThunk<
-	Omit<BookResponse, 'kind'>,
-	{ query: string; startIndex?: number }
->('books/fetchBooks', async ({ query, startIndex }) => {
-	const correctValue = query.trim().split(' ').join('+');
-	const res = await getBooks(correctValue, startIndex);
-	console.log(res);
+	BookResponse,
+	{ query: string; startIndex: number },
+	{ rejectValue: ErrorType }
+>('books/fetchBooks', async ({ query, startIndex }, { rejectWithValue }) => {
+	const formattedQuery = query.trim().split(' ').join('+');
+	const res = await fetch(FETCH_BOOKS(formattedQuery, startIndex));
 
-	const { items, totalItems } = res;
+	if (!res.ok) {
+		return rejectWithValue({ status: res.status, statusText: res.statusText });
+	}
+
+	const { items, totalItems } = await res.json();
 
 	return {
 		items,
@@ -42,7 +41,9 @@ const booksSlice = createSlice({
 	name: 'books',
 	initialState,
 	reducers: {
-		// newBooksRequest()
+		resetBooks(state) {
+			state.books = [];
+		},
 	},
 	extraReducers: (builder) => {
 		builder
@@ -52,18 +53,31 @@ const booksSlice = createSlice({
 			})
 			.addCase(fetchBooks.fulfilled, (state, action) => {
 				state.status = 'succeeded';
-				// The server may not be able to return the books
-				booksAdapter.setAll(state, action.payload.items ?? {});
-				// booksAdapter.sor
-				state.totalBooks = action.payload.totalItems;
+				const { items, totalItems } = action.payload;
+
+				// The server may not return a value
+				if (items) {
+					state.books = [...state.books, ...items];
+				} else {
+					state.books = [];
+				}
+
+				state.totalBooks = totalItems;
 			})
-			.addCase(fetchBooks.rejected, (state) => {
+			.addCase(fetchBooks.rejected, (state, action) => {
 				state.status = 'rejected';
+				if (action.payload) {
+					state.error = action.payload;
+				} else {
+					state.error = {
+						status: 404,
+						statusText: 'Something went wrong',
+					};
+				}
 			});
 	},
 });
 
-export const { selectAll: selectAllBooks, selectById: selectBookById } =
-	booksAdapter.getSelectors((state: RootState) => state.books);
+export const { resetBooks } = booksSlice.actions;
 
 export default booksSlice.reducer;
