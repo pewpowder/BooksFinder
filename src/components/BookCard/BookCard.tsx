@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Book } from 'types';
 import NotFoundImg from '../../assets/img/not-found.png';
-
 import styles from './BookCard.module.scss';
 
 interface BookCardProps extends Book {}
@@ -45,7 +44,5 @@ function BookCard({ id, volumeInfo }: BookCardProps) {
 		</article>
 	);
 }
-
-function DetailsList({ volumeInfo }: Pick<BookCardProps, 'volumeInfo'>) {}
 
 export default BookCard;

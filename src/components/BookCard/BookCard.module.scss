@@ -60,7 +60,7 @@ $media-size: 1010px;
 	color: var(--colors-text);
 	transition: 250ms all ease-in;
 
-	&:focus {
+	&:focus-visible {
 		outline: none;
 		outline: 1px solid var(--border-color);
 	}

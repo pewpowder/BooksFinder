@@ -1,17 +1,15 @@
-.container {
-	.books-count {
-		display: block;
-		margin-bottom: 0.5rem;
-	}
+.books-count {
+	display: block;
+	margin-bottom: 0.5rem;
+}
 
-	.card-list {
-		display: grid;
-		gap: 0.5rem 1rem;
-		grid-template-columns: repeat(2, 1fr);
-	}
+.card-list {
+	display: grid;
+	gap: 0.5rem 1rem;
+	grid-template-columns: repeat(2, 1fr);
 
 	@media (max-width: 820px) {
-		.card-list {
+		& {
 			grid-template-columns: 1fr;
 		}
 	}

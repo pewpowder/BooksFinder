@@ -8,7 +8,12 @@
 8. Fix error when we reload details page app crashed. +
 9. SearchPanel doesn't work from DetailsPage (Or remove or fix) +
 10. Add current theme in localStorage +
-11. Remember how rendering works.
+11. Remember how rendering works. +
+12. Changing the address bar (
+	It is considered a good tone when we can link to a public page and the other person will see everything exactly as we do: content sorting, amount, start and end. The address bar and page URLs are used for this purpose.
+)
+13. Implement tests
+14. React search panel renders redundantly (https://blog.logrocket.com/what-are-react-pure-functional-components/).
 
 // Project structure
 1. Components shouldn't contain any logic inside it.
@@ -24,5 +29,6 @@
 		5. section
 		6. article
 		
+		// https://web.archive.org/web/20220117092326/http://demo.nimius.net/debounce_throttle/ - visual difference between regular event/ throttled event / debounced event.
 		<a target="_blank" href="https://icons8.com/icon/114010/books">Books</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
 */

@@ -22,25 +22,28 @@ const initialState = booksAdapter.getInitialState<InitialState>({
 	totalBooks: 0,
 });
 
-export const fetchBooks = createAsyncThunk<Omit<BookResponse, 'kind'>, string>(
-	'books/fetchBooks',
-	async (query) => {
-		const correctValue = query.trim().split(' ').join('+');
+export const fetchBooks = createAsyncThunk<
+	Omit<BookResponse, 'kind'>,
+	{ query: string; startIndex?: number }
+>('books/fetchBooks', async ({ query, startIndex }) => {
+	const correctValue = query.trim().split(' ').join('+');
+	const res = await getBooks(correctValue, startIndex);
+	console.log(res);
 
-		const res = await getBooks(correctValue);
-		const { items, totalItems } = res;
+	const { items, totalItems } = res;
 
-		return {
-			items,
-			totalItems,
-		};
-	}
-);
+	return {
+		items,
+		totalItems,
+	};
+});
 
 const booksSlice = createSlice({
 	name: 'books',
 	initialState,
-	reducers: {},
+	reducers: {
+		// newBooksRequest()
+	},
 	extraReducers: (builder) => {
 		builder
 			.addCase(fetchBooks.pending, (state) => {
@@ -51,6 +54,7 @@ const booksSlice = createSlice({
 				state.status = 'succeeded';
 				// The server may not be able to return the books
 				booksAdapter.setAll(state, action.payload.items ?? {});
+				// booksAdapter.sor
 				state.totalBooks = action.payload.totalItems;
 			})
 			.addCase(fetchBooks.rejected, (state) => {

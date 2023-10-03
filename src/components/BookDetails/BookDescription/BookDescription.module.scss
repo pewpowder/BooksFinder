@@ -33,13 +33,22 @@
 	border-radius: var(--radius);
 	transition: 200ms all ease-in;
 
-	&:focus {
+	&:focus-visible {
 		outline: 1px solid var(--border-color);
+	}
+
+	.input-group:has(:focus-visible) {
+		outline: 4px solid hotpink;
 	}
 
 	&:hover {
 		font-weight: var(--fw-normal);
 		transform: scale(1.05);
 		transform-origin: left top;
+	}
+
+	&.disabled {
+		pointer-events: none;
+		opacity: 0.5;
 	}
 }

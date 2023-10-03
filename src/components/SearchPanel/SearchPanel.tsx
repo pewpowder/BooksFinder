@@ -1,30 +1,36 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { fetchBooks } from '../../features/books/booksSlice';
-import { useAppDispatch } from 'redux-hooks';
 
 import styles from './SearchPanel.module.scss';
 
-function SearchPanel() {
-	const [query, setQuery] = useState('Clean code');
-	const dispatch = useAppDispatch();
+interface SearchPanelProps {
+	requestBooks: (query: string, startIndex?: number) => void;
+	query: string;
+	setQuery: React.Dispatch<React.SetStateAction<string>>;
+	// updateQueryData: (query: string) => void;
+}
+
+function SearchPanel(props: SearchPanelProps) {
+	const { requestBooks, query, setQuery /*updateQueryData*/ } = props;
 	const navigate = useNavigate();
 
-	const handleOnClick = () => {
+	const handleClick = () => {
 		if (query.trim()) {
-			dispatch(fetchBooks(query));
-			navigate('/');
+			requestBooks(query);
+			// updateQueryData();
+			navigate('/books');
 		}
 	};
 
-	const handleOnKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+	const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
 		if (event.key === 'Enter' && query.trim()) {
-			console.log(query);
-
-			dispatch(fetchBooks(query));
-			navigate('/');
+			requestBooks(query);
+			// updateQueryData();
+			navigate('/books');
 		}
 	};
+
+	console.log('Search panel rendered');
 
 	return (
 		<section className={styles['wrapper']}>
@@ -34,12 +40,12 @@ function SearchPanel() {
 				value={query}
 				onChange={(e) => setQuery(e.target.value)}
 				placeholder='Type title, author or publisher ...'
-				onKeyDown={handleOnKeyDown}
+				onKeyDown={handleKeyDown}
 			/>
 			<button
 				type='button'
 				className={styles['search-button']}
-				onClick={handleOnClick}
+				onClick={handleClick}
 			>
 				<span>search</span>
 			</button>

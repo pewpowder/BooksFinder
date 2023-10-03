@@ -12,7 +12,7 @@
 		font-size: var(--fs-sm);
 		font-family: var(--family);
 
-		&:focus {
+		&:focus-visible {
 			outline: 1px solid var(--border-color);
 		}
 	}

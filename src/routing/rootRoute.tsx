@@ -8,11 +8,11 @@ import BookDetailsPage from 'pages/BookDetailsPage/BookDetailsPage';
 const router = createBrowserRouter([
 	{
 		path: '/',
-		element: <HomePage />, // HomePage
+		element: <HomePage />,
 		errorElement: <ErrorPage />,
 		children: [
 			{
-				index: true,
+				path: '/books',
 				element: <BookCardList />,
 			},
 			{

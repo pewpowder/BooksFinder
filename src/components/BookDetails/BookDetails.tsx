@@ -10,9 +10,7 @@ function BookDetails({ volumeInfo }: BookDetailsProps) {
 	return (
 		<section className={styles['container']}>
 			<BookDetailsCard volumeInfo={volumeInfo} />
-			{description && (
-				<BookDescription description={description} previewLink={previewLink} />
-			)}
+			<BookDescription description={description} previewLink={previewLink} />
 		</section>
 	);
 }

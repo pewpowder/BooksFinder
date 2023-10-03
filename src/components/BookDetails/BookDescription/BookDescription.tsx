@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import styles from './BookDescription.module.scss';
 
 interface BookDescriptionProps {
-	description: string;
+	description: string | undefined;
 	previewLink: string | undefined;
 }
 
@@ -22,7 +22,10 @@ function BookDescription({ description, previewLink }: BookDescriptionProps) {
 						href={previewLink}
 						target='_blank'
 						rel='noreferrer'
-						className={`${styles['link']} ${previewLink ? '' : 'disabled'}`}
+						className={`
+							${styles['link']} 
+							${previewLink ? '' : styles['disabled']}
+						`}
 					>
 						Read a sample
 					</a>
