@@ -15,7 +15,7 @@ function BookDescription({ description, previewLink }: BookDescriptionProps) {
 					{description ?? 'no description'}
 				</p>
 				<div className={styles['links-wrapper']}>
-					<Link to='/' className={styles['link']}>
+					<Link to='/books' className={styles['link']}>
 						{'< Back'}
 					</Link>
 					<a

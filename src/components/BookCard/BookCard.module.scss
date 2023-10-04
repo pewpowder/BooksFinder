@@ -66,8 +66,7 @@ $media-size: 1010px;
 	}
 
 	&:hover {
-		font-weight: var(--fw-normal);
-		transform: scale(1.15);
+		transform: scale(1.05);
 		transform-origin: left top;
 	}
 }
