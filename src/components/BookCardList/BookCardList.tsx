@@ -8,22 +8,20 @@ import {
 	selectTotalBooks,
 } from 'features/books/books-selectors';
 import styles from './BookCardList.module.scss';
-import { useEffect, useState } from 'react';
-import { useScrolled } from 'pages/HomePage/HomePage';
+import { useScroll } from 'pages/HomePage/HomePage';
+import { useEffect } from 'react';
 
 function BookCardList() {
-	// const { top } = useScrolled();
 	const books = useAppSelector(selectAllBooks);
 	const totalBooks = useAppSelector(selectTotalBooks);
 	const status = useAppSelector(selectBooksStatus);
 	const error = useAppSelector(selectBooksError);
-	const [counter, setCounter] = useState(0);
+
+	const { scrolledY } = useScroll();
 
 	useEffect(() => {
-		// console.log('Use effect', top);
-		// window.scrollTo({ top });
-		console.log('UseEffect');
-	}, [books]);
+		window.scrollTo(0, scrolledY);
+	});
 
 	if (error) {
 		return <div>{'Render error component if i can get here'}</div>;
@@ -39,7 +37,7 @@ function BookCardList() {
 
 	console.log('Book card list rendered', books);
 	// console.log('Book card list rendered', currentBooks);
-	console.log('COUNTER', counter);
+	// console.log('COUNTER', counter);
 
 	return (
 		totalBooks !== 0 && (
@@ -50,7 +48,7 @@ function BookCardList() {
 				<div className={styles['card-list']}>
 					{books.map((book, i) => (
 						// Sometimes server sends books with the same id.
-						<BookCard key={book.id + i} {...book} setCounter={setCounter} />
+						<BookCard key={book.id + i} {...book} />
 					))}
 				</div>
 			</section>

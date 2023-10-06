@@ -7,24 +7,24 @@ import { useAppDispatch } from 'redux-hooks';
 import { fetchBooks, resetBooks } from 'features/books/booksSlice';
 import styles from './HomePage.module.scss';
 
-type OutletContextType = {
-	top: number;
-	left?: number;
+type ContextType = {
+	scrolledY: number;
 };
 
 function HomePage() {
 	const dispatch = useAppDispatch();
-	const [query, setQuery] = useState('Clean code');
+	const [query, setQuery] = useState('Clean code'); // May be change to ref?
+	const [scrolledY, setScrolledY] = useState(0);
 	const startIndexRef = useRef(0);
-	const scrolledRef = useRef(0);
 	const isRequestSending = useRef(false);
 
 	const requestBooks = () => {
 		dispatch(fetchBooks({ query, startIndex: startIndexRef.current }));
 	};
+
 	const resetPreviousBooks = () => {
 		startIndexRef.current = 0;
-		scrolledRef.current = 0;
+		setScrolledY(0);
 		resetBooks();
 	};
 
@@ -33,14 +33,15 @@ function HomePage() {
 			const offsetHeight = document.body.offsetHeight;
 			const screenHeight = window.innerHeight;
 
-			const scrolledY = window.scrollY + screenHeight;
+			const scrolledTop = window.scrollY + screenHeight;
 			const threshold = offsetHeight - screenHeight / 3;
 
-			if (!isRequestSending.current && scrolledY >= threshold) {
+			if (!isRequestSending.current && scrolledTop >= threshold) {
 				isRequestSending.current = true;
 				startIndexRef.current += 12;
+				setScrolledY(threshold);
 				requestBooks();
-			} else if (isRequestSending.current && scrolledY < threshold) {
+			} else if (isRequestSending.current && scrolledTop < threshold) {
 				isRequestSending.current = false;
 			}
 		};
@@ -80,12 +81,12 @@ function HomePage() {
 					setQuery={setQuery}
 					resetPreviousBooks={resetPreviousBooks}
 				/>
-				<Outlet context={{ top: scrolledRef.current }} />
+				<Outlet context={{ scrolledY }} />
 			</main>
 		</div>
 	);
 }
 
-export const useScrolled = () => useOutletContext<OutletContextType>();
+export const useScroll = () => useOutletContext<ContextType>();
 
 export default HomePage;
