@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import styles from './ErrorComponent.module.scss';
-import { ErrorType } from 'types';
+import type { ErrorType } from 'types';
 interface ErrorComponentProps extends ErrorType {}
 
 function ErrorComponent({ statusText, status }: ErrorComponentProps) {

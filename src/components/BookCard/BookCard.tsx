@@ -1,14 +1,21 @@
 import { Link } from 'react-router-dom';
-import { Book } from 'types';
+import type { Book } from 'types';
 import NotFoundImg from 'assets/img/not-found.png';
 import styles from './BookCard.module.scss';
+import { useEffect } from 'react';
 
-interface BookCardProps extends Book {}
+interface BookCardProps extends Book {
+	setCounter: React.Dispatch<React.SetStateAction<number>>;
+}
 
-function BookCard({ id, volumeInfo }: BookCardProps) {
+function BookCard({ id, volumeInfo, setCounter }: BookCardProps) {
 	if (!volumeInfo) {
 		throw new Error('No book info');
 	}
+
+	useEffect(() => {
+		// setCounter((prev) => prev + 1);
+	}, []);
 
 	const { authors, imageLinks, publishedDate, publisher, title } = volumeInfo;
 

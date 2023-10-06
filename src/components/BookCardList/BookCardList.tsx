@@ -8,14 +8,22 @@ import {
 	selectTotalBooks,
 } from 'features/books/books-selectors';
 import styles from './BookCardList.module.scss';
+import { useEffect, useState } from 'react';
+import { useScrolled } from 'pages/HomePage/HomePage';
 
 function BookCardList() {
+	// const { top } = useScrolled();
 	const books = useAppSelector(selectAllBooks);
 	const totalBooks = useAppSelector(selectTotalBooks);
 	const status = useAppSelector(selectBooksStatus);
 	const error = useAppSelector(selectBooksError);
+	const [counter, setCounter] = useState(0);
 
-	console.log('Book card list rendered');
+	useEffect(() => {
+		// console.log('Use effect', top);
+		// window.scrollTo({ top });
+		console.log('UseEffect');
+	}, [books]);
 
 	if (error) {
 		return <div>{'Render error component if i can get here'}</div>;
@@ -29,7 +37,9 @@ function BookCardList() {
 		return <div>Oops, looks like no books were found</div>;
 	}
 
-	console.log(books);
+	console.log('Book card list rendered', books);
+	// console.log('Book card list rendered', currentBooks);
+	console.log('COUNTER', counter);
 
 	return (
 		totalBooks !== 0 && (
@@ -38,8 +48,9 @@ function BookCardList() {
 					About {totalBooks} books found
 				</span>
 				<div className={styles['card-list']}>
-					{books.map((book) => (
-						<BookCard key={book.id} {...book} />
+					{books.map((book, i) => (
+						// Sometimes server sends books with the same id.
+						<BookCard key={book.id + i} {...book} setCounter={setCounter} />
 					))}
 				</div>
 			</section>

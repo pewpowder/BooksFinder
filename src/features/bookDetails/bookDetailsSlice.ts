@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { FETCH_SINGLE_BOOK } from 'services/api';
-import { Book, BookId, ErrorType } from 'types';
+import type { Book, BookId, ErrorType } from 'types';
 
 type InitialState = {
 	status: 'idle' | 'pending' | 'succeeded' | 'rejected';

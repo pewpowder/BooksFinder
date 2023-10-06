@@ -1,4 +1,4 @@
-import { Book } from 'types';
+import type { Book } from 'types';
 import NotFoundImg from 'assets/img/not-found.png';
 
 import styles from './BookDetailsCard.module.scss';

@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 import { FETCH_BOOKS } from 'services/api';
-import { Book, BookResponse, ErrorType } from 'types';
+import type { Book, BookResponse, ErrorType } from 'types';
 
 interface InitialState {
 	books: Book[];

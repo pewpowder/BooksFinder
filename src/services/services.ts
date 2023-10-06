@@ -1,17 +1,26 @@
-export const throttle = <T extends (...args: any) => any>(
+export const throttle = <T extends (...args: Parameters<T>) => any>(
 	fn: T,
 	delay: number
 ) => {
 	let isRunning = false;
-	return function (...args: Parameters<T>) {
-		if (!isRunning) {
-			isRunning = true;
-			fn(args);
+	let savedCall: (() => void) | null = null;
 
-			const timeoutId = setTimeout(() => {
-				isRunning = false;
-				clearTimeout(timeoutId);
-			}, delay);
+	return function (...args: Parameters<T>) {
+		if (isRunning) {
+			savedCall = () => fn(...args);
+			return;
 		}
+
+		fn(...args);
+		isRunning = true;
+
+		const timerId = setTimeout(() => {
+			if (savedCall) {
+				savedCall();
+				savedCall = null;
+			}
+			isRunning = false;
+			clearTimeout(timerId);
+		}, delay);
 	};
 };

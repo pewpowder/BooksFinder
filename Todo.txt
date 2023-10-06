@@ -15,14 +15,9 @@
 13. Implement tests
 14. React search panel renders redundantly (https://blog.logrocket.com/what-are-react-pure-functional-components/).
 15. Learn selectors memoization (createSelect like)
-16. fetchBooks.rejected (Use reject with value)
-17. Sometimes server sends two books with same id. And this happen once per query. For example, query = 'Clean code' and we can keep searching for other books with that title but in some moment server will send book with the same id (ONE TIME).
-18. May be i should replace throttle to debounce fn;
-
-// Project structure
-1. Components shouldn't contain any logic inside it.
-2. 
-
+16. fetchBooks.rejected (Use reject with value) +
+17. Sometimes server sends two books with the same id. And this happen once per query. For example, query = 'Clean code' and we can keep searching for other books with that title but in some moment server will send book with the same id (ONE TIME).
+18. Implement the feature that allows users return back to the previously selected book when they click the back button within the book details section.
 
 /*
 	tags

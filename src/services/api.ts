@@ -1,4 +1,4 @@
-import { BookId } from 'types';
+import type { BookId } from 'types';
 import { API_KEY } from '../config';
 
 const BASE_URL = 'https://www.googleapis.com/books/v1';
