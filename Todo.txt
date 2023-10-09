@@ -1,3 +1,13 @@
+// Todo
+*. Learn how fetch works.
+*. Changing the address bar (
+	It is considered a good tone when we can link to a public page and the other person will see everything exactly as we do: content sorting, amount, start and end. The address bar and page URLs are used for this purpose.
+)
+*. Implement tests
+*. React search panel renders redundantly (https://blog.logrocket.com/what-are-react-pure-functional-components/).
+*. Check how to correct validate errors in JS.
+
+// Completed
 *. Logo should be clickable link that address to home page. +
 *. Implement book loading when we reached the end or with the button. +
 *. Refactor on semantic tags.  +
@@ -9,18 +19,8 @@
 *. Remember how rendering works. +
 *. Learn selectors memoization (createSelect like) +
 *. fetchBooks.rejected (Use reject with value) +
-
-
-
-*. Learn how fetch works.
-*. Learn how to work with react devtools.
-*. Implement the feature that allows users return back to the previously selected book when they click the back button within the book details section.
-*. Changing the address bar (
-	It is considered a good tone when we can link to a public page and the other person will see everything exactly as we do: content sorting, amount, start and end. The address bar and page URLs are used for this purpose.
-)
-*. Implement tests
-*. React search panel renders redundantly (https://blog.logrocket.com/what-are-react-pure-functional-components/).
-*. Check how to correct validate errors in JS.
+*. Implement the feature that allows users return back to the previously selected book when they click the back button within the book details section.+
+*. Learn how to work with react devtools. +
 
 /*
 	tags
