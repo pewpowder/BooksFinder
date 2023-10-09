@@ -7,16 +7,15 @@ import {
 	selectBooksStatus,
 	selectTotalBooks,
 } from 'features/books/books-selectors';
-import styles from './BookCardList.module.scss';
 import { useScroll } from 'pages/HomePage/HomePage';
 import { useEffect } from 'react';
+import styles from './BookCardList.module.scss';
 
 function BookCardList() {
 	const books = useAppSelector(selectAllBooks);
 	const totalBooks = useAppSelector(selectTotalBooks);
 	const status = useAppSelector(selectBooksStatus);
 	const error = useAppSelector(selectBooksError);
-
 	const { scrolledY } = useScroll();
 
 	useEffect(() => {
@@ -35,9 +34,7 @@ function BookCardList() {
 		return <div>Oops, looks like no books were found</div>;
 	}
 
-	console.log('Book card list rendered', books);
-	// console.log('Book card list rendered', currentBooks);
-	// console.log('COUNTER', counter);
+	console.log('BookCardList', scrolledY);
 
 	return (
 		totalBooks !== 0 && (
@@ -46,9 +43,8 @@ function BookCardList() {
 					About {totalBooks} books found
 				</span>
 				<div className={styles['card-list']}>
-					{books.map((book, i) => (
-						// Sometimes server sends books with the same id.
-						<BookCard key={book.id + i} {...book} />
+					{books.map((book) => (
+						<BookCard key={book.etag} {...book} />
 					))}
 				</div>
 			</section>

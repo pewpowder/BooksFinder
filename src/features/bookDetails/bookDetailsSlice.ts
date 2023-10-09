@@ -25,10 +25,11 @@ export const fetchBook = createAsyncThunk<
 		return rejectWithValue({ status: res.status, statusText: res.statusText });
 	}
 
-	const { id, volumeInfo } = await res.json();
+	const { id, etag, volumeInfo } = await res.json();
 
 	return {
 		id,
+		etag,
 		volumeInfo,
 	};
 });

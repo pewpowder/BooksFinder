@@ -7,6 +7,7 @@ export type BookId = string;
 
 export type Book = {
 	id: BookId;
+	etag: string;
 	volumeInfo: VolumeInfo;
 };
 

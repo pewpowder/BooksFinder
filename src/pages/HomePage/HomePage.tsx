@@ -39,7 +39,10 @@ function HomePage() {
 			if (!isRequestSending.current && scrolledTop >= threshold) {
 				isRequestSending.current = true;
 				startIndexRef.current += 12;
-				setScrolledY(threshold);
+				// console.log('Threshold', threshold);
+				// console.log('ScreenHeight', screenHeight);
+
+				setScrolledY(threshold - screenHeight);
 				requestBooks();
 			} else if (isRequestSending.current && scrolledTop < threshold) {
 				isRequestSending.current = false;
@@ -65,6 +68,8 @@ function HomePage() {
 			2. Make the request not at the very end, but in advance.
 			3. Request shouldn't be dispatched when we already made one request.
 	*/
+
+	console.log('HomePage rendered');
 
 	return (
 		<div className={styles['container']}>
