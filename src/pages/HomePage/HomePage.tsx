@@ -1,7 +1,7 @@
 import { Link, Outlet, useOutletContext } from 'react-router-dom';
 import SearchPanel from 'components/SearchPanel/SearchPanel';
 import ThemeToggle from 'components/ThemeToggle/ThemeToggle';
-import { useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { useAppDispatch } from 'redux-hooks';
 import { fetchBooks, resetBooks } from 'features/books/booksSlice';
 import styles from './HomePage.module.scss';
@@ -15,7 +15,7 @@ type ContextType = {
 
 function HomePage() {
 	const dispatch = useAppDispatch();
-	const [query, setQuery] = useState('Clean code'); // May be change to ref?
+	const [query, setQuery] = useState('Clean code'); // May be should replace hook with useRef?
 	const [scrolledY, setScrolledY] = useState(0);
 	const startIndexRef = useRef(0);
 
@@ -23,17 +23,22 @@ function HomePage() {
 		dispatch(fetchBooks({ query, startIndex: startIndexRef.current }));
 	};
 
+	const outletContext = useMemo(() => {
+		return {
+			scrolledY,
+			setScrolledY,
+			startIndexRef,
+			requestBooks,
+		};
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [scrolledY, startIndexRef]);
+
 	const resetPreviousBooks = () => {
 		startIndexRef.current = 0;
 		setScrolledY(0);
 		resetBooks();
 	};
-
-	/* Rules for pagination: 
-			1. I don't want already existing card to be updated;
-			2. Make the request not at the very end, but in advance.
-			3. Request shouldn't be dispatched when we already made one request.
-	*/
 
 	return (
 		<div className={styles['container']}>
@@ -50,14 +55,12 @@ function HomePage() {
 					setQuery={setQuery}
 					resetPreviousBooks={resetPreviousBooks}
 				/>
-				<Outlet
-					context={{ scrolledY, setScrolledY, startIndexRef, requestBooks }}
-				/>
+				<Outlet context={outletContext} />
 			</main>
 		</div>
 	);
 }
 
-export const useAppOutletContext = () => useOutletContext<ContextType>();
+export const useTypedOutletContext = () => useOutletContext<ContextType>();
 
 export default HomePage;

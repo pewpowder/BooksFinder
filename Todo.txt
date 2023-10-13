@@ -1,11 +1,11 @@
 // Todo
-*. Learn how fetch works.
 *. Changing the address bar (
 	It is considered a good tone when we can link to a public page and the other person will see everything exactly as we do: content sorting, amount, start and end. The address bar and page URLs are used for this purpose.
 )
+*. Learn how fetch works.
 *. Implement tests
-*. React search panel renders redundantly (https://blog.logrocket.com/what-are-react-pure-functional-components/).
 *. Check how to correct validate errors in JS.
+*. Remove pages, routing and store folders
 
 // Completed
 *. Logo should be clickable link that address to home page. +

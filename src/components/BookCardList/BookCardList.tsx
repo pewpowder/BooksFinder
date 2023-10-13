@@ -7,10 +7,11 @@ import {
 	selectBooksStatus,
 	selectTotalBooks,
 } from 'features/books/books-selectors';
-import { useAppOutletContext } from 'pages/HomePage/HomePage';
+import { useTypedOutletContext } from 'pages/HomePage/HomePage';
 import { useEffect, useRef } from 'react';
 import { throttle } from 'services/services';
 import styles from './BookCardList.module.scss';
+import React from 'react';
 
 function BookCardList() {
 	const books = useAppSelector(selectAllBooks);
@@ -19,8 +20,8 @@ function BookCardList() {
 	const error = useAppSelector(selectBooksError);
 
 	const isRequestSending = useRef(false);
-	const { scrolledY, setScrolledY, startIndexRef, requestBooks } =
-		useAppOutletContext();
+	const { scrolledY, setScrolledY, requestBooks, startIndexRef } =
+		useTypedOutletContext();
 
 	useEffect(() => {
 		const handleScroll = () => {
@@ -29,8 +30,6 @@ function BookCardList() {
 
 			const scrolledTop = window.scrollY + screenHeight;
 			const threshold = offsetHeight - screenHeight / 3;
-
-			console.log('OffsetHeight', offsetHeight);
 
 			if (!isRequestSending.current && scrolledTop >= threshold) {
 				isRequestSending.current = true;
@@ -72,6 +71,8 @@ function BookCardList() {
 	if (totalBooks === 0 && status === 'succeeded') {
 		return <div>Oops, looks like no books were found</div>;
 	}
+
+	console.log('BookCardList rendered');
 
 	return (
 		totalBooks !== 0 && (

@@ -18,8 +18,6 @@ function BookDetailsCard({ volumeInfo }: BookDetailsCardProps) {
 		title,
 	} = volumeInfo;
 
-	//?? imageLinks?.smallThumbnail
-
 	return (
 		<article className={styles['card']}>
 			<h5 className={styles['card-title']}>{title}</h5>

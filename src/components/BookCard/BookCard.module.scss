@@ -8,6 +8,7 @@ $media-size: 1010px;
 }
 
 .card-img {
+	min-width: 128px;
 	max-width: 128px;
 
 	border-top-left-radius: calc(var(--radius) - 2px);
