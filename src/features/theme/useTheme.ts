@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { setTheme, selectTheme, Themes } from './themeSlice';
-import { useAppDispatch, useAppSelector } from 'redux-hooks';
+import { useAppDispatch, useAppSelector } from 'hooks/redux-hooks';
 
 function useTheme(): [Themes, () => void] {
 	const { theme } = useAppSelector(selectTheme);

@@ -13,9 +13,9 @@ const container = document.getElementById('root') as HTMLElement;
 const root = createRoot(container);
 
 root.render(
-	<React.StrictMode>
-		<Provider store={store}>
-			<RouterProvider router={router} />
-		</Provider>
-	</React.StrictMode>
+  <React.StrictMode>
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
+  </React.StrictMode>
 );

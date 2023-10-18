@@ -1,10 +1,10 @@
 import { useParams } from 'react-router-dom';
-import { useAppSelector } from 'redux-hooks';
-import useBookDetails from 'features/bookDetails/use-bookDetails';
+import { useAppSelector } from 'hooks/redux-hooks';
+import useBookDetails from 'features/bookDetails/useBookDetails';
 import {
 	selectBookDetailsError,
 	selectBookDetailsStatus,
-} from 'features/bookDetails/bookDetails-selectors';
+} from 'features/bookDetails/bookDetailsSelectors';
 
 import BookDetails from 'components/BookDetails/BookDetails';
 import Spinner from 'components/Spinner/Spinner';

@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from 'redux-hooks';
+import { useAppDispatch, useAppSelector } from 'hooks/redux-hooks';
 import type { Book, BookId } from 'types';
 import { clearBookDetails, fetchBook } from './bookDetailsSlice';
-import { selectBookDetails } from './bookDetails-selectors';
+import { selectBookDetails } from './bookDetailsSelectors';
 
 function useBookDetails(id: BookId | undefined): Book | null {
 	const dispatch = useAppDispatch();

@@ -6,6 +6,18 @@
 *. Implement tests
 *. Check how to correct validate errors in JS.
 *. Remove pages, routing and store folders
+*. When page reloads startIndex increases by 12, but it should not be happening. This is occur because we set scrollY from sessionStorage when page loading
+but requesting only 12 books, so scrollY > content height and we scrolled down to the page where request occurs.
+*. Add comments (/**
+ * @param baseURL
+ * @param params
+ * @returns
+ */) /** + tab
+*. May be I can send request several times, when user has loaded more then 40 books using Promise.all or smth.
+*. Revise ??, &&, ||.
+*. Revise async/await.
+
+http://localhost:3000/books?query=%27Clean%20code%27&start-index=%2712%27
 
 // Completed
 *. Logo should be clickable link that address to home page. +
@@ -30,7 +42,7 @@
 		4. header
 		5. section
 		6. article
-		
+
 		// https://web.archive.org/web/20220117092326/http://demo.nimius.net/debounce_throttle/ - visual difference between regular event/ throttled event / debounced event.
 		<a target="_blank" href="https://icons8.com/icon/114010/books">Books</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
 */
