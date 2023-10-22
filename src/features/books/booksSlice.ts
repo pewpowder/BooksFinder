@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-
-import { FETCH_BOOKS } from 'services/api';
 import type { Book, BookResponse, ErrorType, FetchBooksParams } from 'types';
+import type { RootState } from 'store/store';
+import { generatePromises } from 'services/services';
 
 type InitialState = {
   books: Book[];
@@ -24,22 +24,53 @@ type AsyncThunkProps = {
 export const fetchBooks = createAsyncThunk<
   BookResponse,
   AsyncThunkProps,
-  { rejectValue: ErrorType }
->('books/fetchBooks', async (props, { rejectWithValue }) => {
-  const { query, startIndex, signal } = props;
+  {
+    rejectValue: ErrorType;
+    state: RootState;
+  }
+>('books/fetchBooks', async (props, { rejectWithValue, getState }) => {
+  const { query, startIndex, booksCount, signal } = props;
   const formattedQuery = query.trim().split(' ').join('+');
-  const res = await fetch(FETCH_BOOKS({ query: formattedQuery, startIndex }), {
-    signal,
-  });
+  const books = getState().books.books;
 
-  if (!res.ok) {
-    return rejectWithValue({
-      status: res.status,
-      statusText: res.statusText,
-    });
+  const items: Book[] = [];
+  let totalItems = 0;
+  const reasons: string[] = [];
+
+  console.log('books.length', books.length);
+
+  const allSettledResult = await Promise.allSettled(
+    generatePromises({
+      query: formattedQuery,
+      booksCount: booksCount - books.length,
+      startIndex,
+      signal,
+    })
+  );
+
+  for (let i = 0; i < allSettledResult.length; i++) {
+    const response = allSettledResult[i];
+
+    if (response.status === 'fulfilled') {
+      const json = await response.value.json();
+      items.push(...json.items);
+      totalItems = json.totalItems;
+    } else {
+      reasons.push(`Promise ${i} rejected due to - ${response.reason}`);
+    }
   }
 
-  const { items, totalItems } = await res.json();
+  if (reasons.length === allSettledResult.length) {
+    let statusText = '';
+    reasons.forEach((reason) => {
+      statusText += `${reason} \n`;
+    });
+
+    return rejectWithValue({
+      name: 'Request rejected',
+      statusText,
+    });
+  }
 
   return {
     items,
@@ -71,7 +102,6 @@ const booksSlice = createSlice({
         } else {
           state.books = [];
         }
-
         state.totalBooks = totalItems;
       })
       .addCase(fetchBooks.rejected, (state, action) => {

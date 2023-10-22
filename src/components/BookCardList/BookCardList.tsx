@@ -3,6 +3,7 @@ import BookCard from 'components/BookCard/BookCard';
 import Spinner from 'components/Spinner/Spinner';
 import {
   selectAllBooks,
+  selectBooksError,
   selectBooksStatus,
   selectTotalBooks,
 } from 'features/books/booksSelectors';
@@ -15,25 +16,11 @@ function BookCardList() {
   const books = useAppSelector(selectAllBooks);
   const totalBooks = useAppSelector(selectTotalBooks);
   const status = useAppSelector(selectBooksStatus);
+  const error = useAppSelector(selectBooksError);
 
-  const { scrolledY, setScrolledY, requestBooks, startIndexRef } =
-    useTypedOutletContext();
+  const { scrolledY, handleScroll } = useTypedOutletContext();
 
   useEffect(() => {
-    const handleScroll = () => {
-      const offsetHeight = document.body.offsetHeight;
-      const screenHeight = window.innerHeight;
-
-      const scrolledTop = window.scrollY + screenHeight;
-      const threshold = offsetHeight - screenHeight / 3;
-
-      if (status !== 'pending' && scrolledTop >= threshold) {
-        startIndexRef.current += 12;
-        setScrolledY(threshold - screenHeight);
-        requestBooks();
-      }
-    };
-
     const throttledHandleScroll = throttle<typeof handleScroll>(
       handleScroll,
       500
@@ -54,6 +41,15 @@ function BookCardList() {
 
   if (status === 'pending') {
     return <Spinner />;
+  }
+
+  if (status === 'rejected') {
+    return (
+      <div>
+        <span>status - {error?.status || error?.name || 'unknown'}</span>
+        <span>{error?.statusText || 'unknown'}</span>
+      </div>
+    );
   }
 
   if (totalBooks === 0 && status === 'succeeded') {

@@ -30,11 +30,12 @@ type VolumeInfo = {
 
 export type ErrorType = {
   statusText: string;
-  status: number;
+  status?: number;
+  name?: string;
 };
 
 export type FetchBooksParams = {
   query: string;
-  startIndex?: number;
-  // booksCount?: number;
+  startIndex: number;
+  booksCount: number;
 };

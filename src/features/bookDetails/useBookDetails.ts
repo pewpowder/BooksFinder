@@ -5,21 +5,21 @@ import { clearBookDetails, fetchBook } from './bookDetailsSlice';
 import { selectBookDetails } from './bookDetailsSelectors';
 
 function useBookDetails(id: BookId | undefined): Book | null {
-	const dispatch = useAppDispatch();
-	const book = useAppSelector(selectBookDetails);
+  const dispatch = useAppDispatch();
+  const book = useAppSelector(selectBookDetails);
 
-	useEffect(() => {
-		if (id) {
-			dispatch(fetchBook(id));
-		}
+  useEffect(() => {
+    if (id) {
+      dispatch(fetchBook(id));
+    }
 
-		return () => {
-			dispatch(clearBookDetails());
-		};
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+    return () => {
+      dispatch(clearBookDetails());
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-	return book;
+  return book;
 }
 
 export default useBookDetails;

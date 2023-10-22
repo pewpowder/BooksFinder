@@ -6,9 +6,9 @@ export type SearchParamsType = { [k: string]: string | number };
 type ReturnedTuple = [URLSearchParams, (params: SearchParamsType) => void];
 
 /*
-	1. Hook must relocate after searchParams is updated.
-	2. Hook must provide access to searchParams
-	3. Hook must provide updateSearchParams function
+	1. Hook should relocate after searchParams is updated.
+	2. Hook should provide access to searchParams
+	3. Hook should provide updateSearchParams function
 */
 function useSearchParamsAndNavigate(baseURL: string): ReturnedTuple {
   const [searchParams, setSearchParams] = useSearchParams(
@@ -24,6 +24,7 @@ function useSearchParamsAndNavigate(baseURL: string): ReturnedTuple {
         url += `${key}=${searchParams[key]}`;
       }
     }
+
     navigate(url);
   };
 
@@ -43,6 +44,8 @@ function useSearchParamsAndNavigate(baseURL: string): ReturnedTuple {
       updateSearchParams(searchParams);
       navigateWithSearchParams(searchParams);
     },
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [baseURL]
   );
 

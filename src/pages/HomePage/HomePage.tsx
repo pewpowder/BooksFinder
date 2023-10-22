@@ -1,81 +1,120 @@
-import { Link, Outlet, useOutletContext } from 'react-router-dom';
+import { Link, Outlet, useNavigate, useOutletContext } from 'react-router-dom';
 import SearchPanel from 'components/SearchPanel/SearchPanel';
 import ThemeToggle from 'components/ThemeToggle/ThemeToggle';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { useAppDispatch } from 'hooks/redux-hooks';
+import { useAppDispatch, useAppSelector } from 'hooks/redux-hooks';
 import { fetchBooks, resetBooks } from 'features/books/booksSlice';
 import useSearchParamsAndNavigate from 'hooks/useSearchParamsAndNavigate';
 import useScrollY from 'hooks/useScrollY';
 import type { FetchBooksParams } from 'types';
+import { selectBooksStatus } from 'features/books/booksSelectors';
+import { BOOKS_COUNT_REQUESTED_DEFAULT } from 'services/services';
 
 import styles from './HomePage.module.scss';
 
 type ContextType = {
   scrolledY: number;
-  setScrolledY: React.Dispatch<React.SetStateAction<number>>;
-  startIndexRef: React.MutableRefObject<number>;
-  requestBooks: () => void;
+  handleScroll: () => void;
 };
 
 function HomePage() {
   const dispatch = useAppDispatch();
+  const status = useAppSelector(selectBooksStatus); // TODO: Remove status from the page. This adds to additional renders.
+
   const [query, setQuery] = useState('Clean code');
-  /*
-		[scrolledY, setScrolledY] defined inside HomePage so that users
-		see same client view when they returning from BookDetails component.
-	*/
-  const [scrolledY, setScrolledY] = useScrollY();
   const startIndexRef = useRef(0);
+  const booksCountRef = useRef(BOOKS_COUNT_REQUESTED_DEFAULT);
+  const navigate = useNavigate();
+
+  const [scrolledY, setScrolledY] = useScrollY(); // [scrolledY, setScrolledY] defined inside HomePage so that users see same client view when they returning from BookDetails component.
   const [searchParams, updateSearchParamsAndNavigate] =
     useSearchParamsAndNavigate('/books');
 
-  const requestBooks = () => {
-    const fetchParams = { query, startIndex: startIndexRef.current };
+  const requestBooks = (fetchParams: FetchBooksParams) => {
     updateSearchParamsAndNavigate(fetchParams);
     dispatch(fetchBooks(fetchParams));
   };
 
-  useEffect(() => {
-    if (searchParams.has('query')) {
-      const searchParamsQuery = searchParams.get('query') as string;
-      const searchParamsStartIndex = Number(searchParams.get('startIndex'));
-      setQuery(searchParamsQuery);
-      startIndexRef.current = searchParamsStartIndex;
+  const handleOnSearch = () => {
+    resetPreviousBooks();
+    requestBooks({
+      query,
+      startIndex: startIndexRef.current,
+      booksCount: booksCountRef.current,
+    });
+  };
 
-      // In strict mode request is sent twice (If we load the page with search params).
-      // We abort first request.
-      const controller = new AbortController();
-      const signal = controller.signal;
-      dispatch(
-        fetchBooks({
-          query: searchParamsQuery,
-          startIndex: searchParamsStartIndex,
-          signal,
-        })
-      );
+  const handleScroll = () => {
+    const offsetHeight = document.body.offsetHeight;
+    const screenHeight = window.innerHeight;
 
-      return () => {
-        controller.abort();
-      };
+    const scrolledTop = window.scrollY + screenHeight;
+    const threshold = offsetHeight - screenHeight / 3;
+
+    if (status !== 'pending' && scrolledTop >= threshold) {
+      startIndexRef.current += BOOKS_COUNT_REQUESTED_DEFAULT;
+      booksCountRef.current += BOOKS_COUNT_REQUESTED_DEFAULT;
+      setScrolledY(threshold - screenHeight);
+
+      requestBooks({
+        query,
+        startIndex: startIndexRef.current,
+        booksCount: booksCountRef.current,
+      });
     }
-  }, []);
+  };
+
+  // const req = () => {
+  //   return requestBooks({
+  //     query,
+  //     startIndex: startIndexRef.current,
+  //     booksCount: booksCountRef.current,
+  //   })
+  // }
+
+  const resetPreviousBooks = () => {
+    startIndexRef.current = 0;
+    booksCountRef.current = BOOKS_COUNT_REQUESTED_DEFAULT;
+    setScrolledY(0);
+    dispatch(resetBooks());
+  };
 
   const outletContext = useMemo(() => {
     return {
       scrolledY,
-      setScrolledY,
-      startIndexRef,
-      requestBooks,
+      handleScroll,
     };
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [scrolledY, startIndexRef]);
+  }, [scrolledY, status]);
 
-  const resetPreviousBooks = () => {
-    startIndexRef.current = 0;
-    setScrolledY(0);
-    dispatch(resetBooks());
-  };
+  useEffect(() => {
+    if (searchParams.has('query')) {
+      const searchParamsQuery = searchParams.get('query') as string;
+      const searchParamsBooksCount = Number(searchParams.get('booksCount'));
+      booksCountRef.current =
+        searchParamsBooksCount ?? BOOKS_COUNT_REQUESTED_DEFAULT;
+      setQuery(searchParamsQuery);
+
+      const fetchParams: FetchBooksParams = {
+        query: searchParamsQuery,
+        startIndex: startIndexRef.current,
+        booksCount: booksCountRef.current,
+      };
+
+      const controller = new AbortController();
+      const signal = controller.signal;
+      dispatch(fetchBooks({ ...fetchParams, signal }));
+      updateSearchParamsAndNavigate(fetchParams);
+
+      return () => {
+        controller.abort();
+        navigate(-1); // TODO: Check if it can produce bugs
+      };
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className={styles['container']}>
@@ -91,10 +130,9 @@ function HomePage() {
       </header>
       <main>
         <SearchPanel
-          requestBooks={requestBooks}
           query={query}
           setQuery={setQuery}
-          resetPreviousBooks={resetPreviousBooks}
+          handleOnSearch={handleOnSearch}
         />
         <Outlet context={outletContext} />
       </main>

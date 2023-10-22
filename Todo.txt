@@ -13,11 +13,8 @@ but requesting only 12 books, so scrollY > content height and we scrolled down t
  * @param params
  * @returns
  */) /** + tab
-*. May be I can send request several times, when user has loaded more then 40 books using Promise.all or smth.
 *. Revise ??, &&, ||.
-*. Revise async/await.
-
-http://localhost:3000/books?query=%27Clean%20code%27&start-index=%2712%27
+*. updateSearchParamsAndNavigate. SearchParams single source of truth
 
 // Completed
 *. Logo should be clickable link that address to home page. +
@@ -33,6 +30,8 @@ http://localhost:3000/books?query=%27Clean%20code%27&start-index=%2712%27
 *. fetchBooks.rejected (Use reject with value) +
 *. Implement the feature that allows users return back to the previously selected book when they click the back button within the book details section.+
 *. Learn how to work with react devtools. +
+*. Revise async/await. +
+
 
 /*
 	tags
