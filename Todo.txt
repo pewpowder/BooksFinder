@@ -1,20 +1,15 @@
 // Todo
-*. Changing the address bar (
-	It is considered a good tone when we can link to a public page and the other person will see everything exactly as we do: content sorting, amount, start and end. The address bar and page URLs are used for this purpose.
-)
 *. Learn how fetch works.
 *. Implement tests
 *. Check how to correct validate errors in JS.
 *. Remove pages, routing and store folders
-*. When page reloads startIndex increases by 12, but it should not be happening. This is occur because we set scrollY from sessionStorage when page loading
-but requesting only 12 books, so scrollY > content height and we scrolled down to the page where request occurs.
 *. Add comments (/**
  * @param baseURL
  * @param params
  * @returns
  */) /** + tab
 *. Revise ??, &&, ||.
-*. updateSearchParamsAndNavigate. SearchParams single source of truth
+*. SearchParams should be single source of truth
 
 // Completed
 *. Logo should be clickable link that address to home page. +
@@ -31,6 +26,11 @@ but requesting only 12 books, so scrollY > content height and we scrolled down t
 *. Implement the feature that allows users return back to the previously selected book when they click the back button within the book details section.+
 *. Learn how to work with react devtools. +
 *. Revise async/await. +
+*. Changing the address bar (
+	It is considered a good tone when we can link to a public page and the other person will see everything exactly as we do: content sorting, amount, start and end. The address bar and page URLs are used for this purpose.
+) +
+*. When page reloads startIndex increases by 12, but it should not be happening. This is occur because we set scrollY from sessionStorage when page loading
+but requesting only 12 books, so scrollY > content height and we scrolled down to the page where request occurs. +
 
 
 /*

@@ -1,11 +1,13 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import type { Book, BookResponse, ErrorType, FetchBooksParams } from 'types';
-import type { RootState } from 'store/store';
+import type { RootState } from 'store';
 import { generatePromises } from 'services/services';
+
+export type StatusType = 'idle' | 'pending' | 'succeeded' | 'rejected';
 
 type InitialState = {
   books: Book[];
-  status: 'idle' | 'pending' | 'succeeded' | 'rejected';
+  status: StatusType;
   error: ErrorType | null;
   totalBooks: number;
 };

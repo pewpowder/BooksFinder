@@ -1,24 +1,24 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { RootState } from 'store/store';
+import { RootState } from 'store';
 
 export type Themes = 'dark' | 'light';
 
 type InitialState = {
-	theme: Themes;
+  theme: Themes;
 };
 
 const initialState: InitialState = {
-	theme: (localStorage.getItem('theme') as Themes) || 'light',
+  theme: (localStorage.getItem('theme') as Themes) || 'light',
 };
 
 const theme = createSlice({
-	name: 'theme',
-	initialState,
-	reducers: {
-		setTheme(state, action: PayloadAction<Themes>) {
-			state.theme = action.payload;
-		},
-	},
+  name: 'theme',
+  initialState,
+  reducers: {
+    setTheme(state, action: PayloadAction<Themes>) {
+      state.theme = action.payload;
+    },
+  },
 });
 
 export const { setTheme } = theme.actions;

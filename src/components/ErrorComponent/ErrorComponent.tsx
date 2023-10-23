@@ -1,14 +1,22 @@
-import { Link } from 'react-router-dom';
+import { Link, isRouteErrorResponse, useRouteError } from 'react-router-dom';
 import styles from './ErrorComponent.module.scss';
-import type { ErrorType } from 'types';
 
-interface ErrorComponentProps extends ErrorType {}
+// TODO: Validate the error correctly.
+function ErrorComponent() {
+  const error = useRouteError();
 
-function ErrorComponent({ statusText, status, name }: ErrorComponentProps) {
+  let statusText = 'Unknown';
+  let status = 404;
+
+  if (isRouteErrorResponse(error)) {
+    statusText = error.statusText;
+    status = error.status;
+  }
+
   return (
     <div className={styles['container']}>
       <div>
-        <h5 className={styles['error-status']}>{status || name}</h5>
+        <h5 className={styles['error-status']}>{status}</h5>
         <p className={styles['error-message']}>
           {`${statusText}, please come back to home page`}
         </p>

@@ -7,7 +7,7 @@ import {
   selectBooksStatus,
   selectTotalBooks,
 } from 'features/books/booksSelectors';
-import { useTypedOutletContext } from 'pages/HomePage/HomePage';
+import { useTypedOutletContext } from 'components/App/App';
 import { useEffect } from 'react';
 import { throttle } from 'services/services';
 import styles from './BookCardList.module.scss';
@@ -17,21 +17,16 @@ function BookCardList() {
   const totalBooks = useAppSelector(selectTotalBooks);
   const status = useAppSelector(selectBooksStatus);
   const error = useAppSelector(selectBooksError);
-
   const { scrolledY, handleScroll } = useTypedOutletContext();
 
   useEffect(() => {
-    const throttledHandleScroll = throttle<typeof handleScroll>(
-      handleScroll,
-      500
-    );
+    const throttledHandleScroll = throttle(() => handleScroll(status), 500);
 
     window.addEventListener('scroll', throttledHandleScroll);
 
     return () => {
       window.removeEventListener('scroll', throttledHandleScroll);
     };
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status]);
 

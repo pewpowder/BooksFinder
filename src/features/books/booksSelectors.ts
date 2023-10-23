@@ -1,4 +1,4 @@
-import { RootState } from 'store/store';
+import { RootState } from 'store';
 
 export const selectAllBooks = (state: RootState) => state.books.books;
 export const selectTotalBooks = (state: RootState) => state.books.totalBooks;

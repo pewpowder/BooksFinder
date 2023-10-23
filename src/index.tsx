@@ -3,9 +3,9 @@ import { RouterProvider } from 'react-router-dom';
 
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
-import { store } from './store/store';
+import { store } from './store';
 
-import router from './routing/rootRoute';
+import router from './rootRoute';
 
 import './index.scss';
 
