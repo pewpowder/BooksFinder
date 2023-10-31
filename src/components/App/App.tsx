@@ -1,5 +1,5 @@
 import { Link, Outlet, useNavigate, useOutletContext } from 'react-router-dom';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useAppDispatch } from 'hooks/redux-hooks';
 import { ErrorBoundary } from 'react-error-boundary';
 import SearchPanel from 'components/SearchPanel/SearchPanel';
@@ -80,34 +80,37 @@ function App() {
     });
   };
 
-  const handleScroll = (status: StatusType) => {
-    const offsetHeight = document.body.offsetHeight;
-    const screenHeight = window.innerHeight;
+  const handleScroll = useCallback(
+    (status: StatusType) => {
+      const offsetHeight = document.body.offsetHeight;
+      const screenHeight = window.innerHeight;
 
-    const scrolledTop = window.scrollY + screenHeight;
-    const threshold = offsetHeight - screenHeight / 3;
+      const scrolledTop = window.scrollY + screenHeight;
+      const threshold = offsetHeight - screenHeight / 3;
 
-    if (status !== 'pending' && scrolledTop >= threshold) {
-      startIndexRef.current += BOOKS_COUNT_REQUESTED_DEFAULT;
-      booksCountRef.current += BOOKS_COUNT_REQUESTED_DEFAULT;
-      setScrolledY(threshold - screenHeight);
+      if (status !== 'pending' && scrolledTop >= threshold) {
+        startIndexRef.current += BOOKS_COUNT_REQUESTED_DEFAULT;
+        booksCountRef.current += BOOKS_COUNT_REQUESTED_DEFAULT;
+        setScrolledY(threshold - screenHeight);
 
-      requestBooks({
-        query,
-        startIndex: startIndexRef.current,
-        booksCount: booksCountRef.current,
-      });
-    }
-  };
+        requestBooks({
+          query,
+          startIndex: startIndexRef.current,
+          booksCount: booksCountRef.current,
+        });
+      }
+    },
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [query, setScrolledY]
+  );
 
   const outletContext = useMemo(() => {
     return {
       scrolledY,
       handleScroll,
     };
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [scrolledY]);
+  }, [scrolledY, handleScroll]);
 
   return (
     <div className={styles['container']}>
