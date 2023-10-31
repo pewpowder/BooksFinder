@@ -12,6 +12,7 @@ import './index.scss';
 const container = document.getElementById('root') as HTMLElement;
 const root = createRoot(container);
 
+document.querySelector('body')?.setAttribute('data-theme', 'light');
 root.render(
   <React.StrictMode>
     <Provider store={store}>

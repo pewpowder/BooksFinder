@@ -1,21 +1,23 @@
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from 'hooks/redux-hooks';
-import type { Book, BookId } from 'types';
-import { clearBookDetails, fetchBook } from './bookDetailsSlice';
 import { selectBookDetails } from './bookDetailsSelectors';
+import { resetBookDetails, fetchBookDetails } from './bookDetailsSlice';
+import type { Book, BookId } from 'types';
 
-function useBookDetails(id: BookId | undefined): Book | null {
+function useBookDetails(bookId: BookId | undefined): Book | null {
   const dispatch = useAppDispatch();
   const book = useAppSelector(selectBookDetails);
 
   useEffect(() => {
-    if (id) {
-      dispatch(fetchBook(id));
-    }
+    if (bookId) {
+      const controller = new AbortController();
+      dispatch(fetchBookDetails({ bookId, signal: controller.signal }));
 
-    return () => {
-      dispatch(clearBookDetails());
-    };
+      return () => {
+        dispatch(resetBookDetails());
+        controller.abort();
+      };
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

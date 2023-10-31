@@ -5,7 +5,7 @@
 	gap: 1rem;
 
 	padding: 0.5rem;
-	border: 1px solid var(--border-color);
+	border: 1px solid var(--colors-border);
 	border-radius: var(--radius);
 	box-shadow: var(--shadow);
 }
@@ -40,7 +40,7 @@
 	transition: 200ms all ease-in;
 
 	&:focus-visible {
-		outline: 1px solid var(--border-color);
+		outline: 1px solid var(--colors-border);
 	}
 
 	&:hover {

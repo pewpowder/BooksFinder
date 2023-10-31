@@ -3,25 +3,32 @@ import { useAppSelector } from 'hooks/redux-hooks';
 import BookDescription from './BookDescription/BookDescription';
 import BookDetailsCard from './BookDetailsCard/BookDetailsCard';
 import Spinner from 'components/Spinner/Spinner';
-import { selectBookDetailsStatus } from 'features/bookDetails/bookDetailsSelectors';
+import ErrorFallback from 'components/ErrorFallback/ErrorFallback';
+import {
+  selectBookDetailsError,
+  selectBookDetailsStatus,
+} from 'features/bookDetails/bookDetailsSelectors';
 import useBookDetails from 'features/bookDetails/useBookDetails';
 import styles from './BookDetails.module.scss';
-
-// interface BookDetailsProps extends Pick<Book, 'volumeInfo'> {}
 
 function BookDetails() {
   const { bookId } = useParams();
   const book = useBookDetails(bookId);
   const status = useAppSelector(selectBookDetailsStatus);
+  const error = useAppSelector(selectBookDetailsError);
+
+  if (status === 'idle') {
+    return null;
+  }
 
   if (status === 'pending') {
     return <Spinner />;
-  } else if (status === 'rejected') {
-    return <div>Book with this id was not found. Please try again.</div>;
   }
 
-  if (!book) {
-    return <div>Book with this id was not found. Please try again.</div>;
+  if (status === 'rejected' || !book) {
+    console.log('status REJECTED');
+
+    return <ErrorFallback error={error} />;
   }
 
   const { volumeInfo } = book;

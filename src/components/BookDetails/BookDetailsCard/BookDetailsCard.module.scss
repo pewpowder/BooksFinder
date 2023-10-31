@@ -3,7 +3,7 @@
 	flex-direction: column;
 	gap: 0.5rem;
 
-	border: 1px solid var(--border-color);
+	border: 1px solid var(--colors-border);
 	border-radius: var(--radius);
 	box-shadow: var(--shadow);
 }
@@ -19,8 +19,8 @@
 	height: auto;
 	width: auto;
 	max-height: 450px;
-	border-bottom: 1px solid var(--border-color);
-	border-top: 1px solid var(--border-color);
+	border-bottom: 1px solid var(--colors-border);
+	border-top: 1px solid var(--colors-border);
 }
 
 .card-list {

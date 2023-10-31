@@ -5,7 +5,7 @@
 	.search-input,
 	.search-button {
 		padding: 0.85rem;
-		border: 1px solid var(--border-color);
+		border: 1px solid var(--colors-border);
 		background-color: var(--bg-color);
 		color: var(--colors-text);
 		box-shadow: var(--shadow);
@@ -13,7 +13,7 @@
 		font-family: var(--family);
 
 		&:focus-visible {
-			outline: 1px solid var(--border-color);
+			outline: 1px solid var(--colors-border);
 		}
 	}
 

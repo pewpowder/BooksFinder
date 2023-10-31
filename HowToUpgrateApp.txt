@@ -1,0 +1,14 @@
+*. If the second request in development is bothering you, the best approach is to use a solution that deduplicates requests and caches their responses between components: (https://react.dev/learn/synchronizing-with-effects#fetching-data)
+*. Add authorization (https://developers.google.com/books/docs/v1/using?hl=ru)
+*. Add books shelf (https://developers.google.com/books/docs/v1/using?hl=ru)
+*. Now only unanticipated errors are caught using ErrorBoundary,
+if the status becomes 'rejected' then the ErrorFallback component is simply rendered
+(Although I have a hard time imagining errors that could occur and not be caught in reject).
+  Now I can't throw errors from components with status equal to 'rejected'
+and catch them with ErrorBoundary, because two components that are rendered in Outlet
+have different states and slices and to find out which component threw errors
+and reset the state for it I have to write a lot of scary (in my opinion) logic
+or have to render BookDetails separately from the main page (but I don't want to do that).
+  Maybe in the future I'll figure out how to get around this situation or change my mind
+about the BookDetails component and recognize that it's better to render it separately.
+*. Put repetitive styles in index.scss, for example, link in BookCard, BookDescription, ErrorRoute and ErrorFallback

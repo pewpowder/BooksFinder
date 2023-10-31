@@ -1,5 +1,5 @@
 export type BookResponse = {
-  items: Book[] | undefined;
+  items: Book[];
   totalItems: number;
 };
 
@@ -26,12 +26,6 @@ type VolumeInfo = {
   previewLink?: string;
   categories?: string[];
   description?: string;
-};
-
-export type ErrorType = {
-  statusText: string;
-  status?: number;
-  name?: string;
 };
 
 export type FetchBooksParams = {

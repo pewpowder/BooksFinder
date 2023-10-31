@@ -14,7 +14,7 @@ $color: #0a4b78;
 		border-radius: var(--radius);
 		max-width: 600px;
 		padding: 1rem;
-		box-shadow: #959da56b 0px 0px 8px;
+		box-shadow: var(--shadow);
 	}
 }
 
@@ -25,6 +25,7 @@ $color: #0a4b78;
 
 .error-message {
 	margin: 0 0 0.75rem;
+	white-space: pre-wrap;
 }
 
 .link {
@@ -38,7 +39,7 @@ $color: #0a4b78;
 	transition: 200ms all ease-in;
 
 	&:focus-visible {
-		outline: 2px solid var(--border-color);
+		outline: 2px solid var(--colors-border);
 		border-color: transparent;
 	}
 

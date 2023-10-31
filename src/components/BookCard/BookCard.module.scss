@@ -2,7 +2,7 @@ $media-size: 1010px;
 
 .card {
 	display: flex;
-	border: 1px solid var(--border-color);
+	border: 1px solid var(--colors-border);
 	border-radius: var(--radius);
 	box-shadow: var(--shadow);
 }
@@ -63,7 +63,7 @@ $media-size: 1010px;
 
 	&:focus-visible {
 		outline: none;
-		outline: 1px solid var(--border-color);
+		outline: 1px solid var(--colors-border);
 	}
 
 	&:hover {

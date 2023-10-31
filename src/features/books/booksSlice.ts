@@ -1,14 +1,14 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import type { Book, BookResponse, ErrorType, FetchBooksParams } from 'types';
 import type { RootState } from 'store';
-import { generatePromises } from 'services/services';
+import type { Book, BookResponse, FetchBooksParams } from 'types';
+import { generatePromises } from 'helpers/services';
 
 export type StatusType = 'idle' | 'pending' | 'succeeded' | 'rejected';
 
 type InitialState = {
   books: Book[];
   status: StatusType;
-  error: ErrorType | null;
+  error: Error | null;
   totalBooks: number;
 };
 
@@ -27,7 +27,7 @@ export const fetchBooks = createAsyncThunk<
   BookResponse,
   AsyncThunkProps,
   {
-    rejectValue: ErrorType;
+    rejectValue: Error;
     state: RootState;
   }
 >('books/fetchBooks', async (props, { rejectWithValue, getState }) => {
@@ -38,8 +38,6 @@ export const fetchBooks = createAsyncThunk<
   const items: Book[] = [];
   let totalItems = 0;
   const reasons: string[] = [];
-
-  console.log('books.length', books.length);
 
   const allSettledResult = await Promise.allSettled(
     generatePromises({
@@ -55,22 +53,24 @@ export const fetchBooks = createAsyncThunk<
 
     if (response.status === 'fulfilled') {
       const json = await response.value.json();
-      items.push(...json.items);
-      totalItems = json.totalItems;
+      if (json.items) {
+        items.push(...json.items);
+        totalItems = json.totalItems;
+      }
     } else {
       reasons.push(`Promise ${i} rejected due to - ${response.reason}`);
     }
   }
 
   if (reasons.length === allSettledResult.length) {
-    let statusText = '';
+    let message = '';
     reasons.forEach((reason) => {
-      statusText += `${reason} \n`;
+      message += `${reason} \n`;
     });
 
     return rejectWithValue({
       name: 'Request rejected',
-      statusText,
+      message,
     });
   }
 
@@ -84,27 +84,22 @@ const booksSlice = createSlice({
   name: 'books',
   initialState,
   reducers: {
-    resetBooks(state) {
-      state.books = [];
-    },
+    resetBooks: () => initialState,
   },
   extraReducers: (builder) => {
     builder
       .addCase(fetchBooks.pending, (state) => {
         state.status = 'pending';
-        state.error = null;
       })
       .addCase(fetchBooks.fulfilled, (state, action) => {
-        state.status = 'succeeded';
         const { items, totalItems } = action.payload;
 
-        // The server may not return a value
-        if (items) {
-          state.books = [...state.books, ...items];
-        } else {
-          state.books = [];
-        }
-        state.totalBooks = totalItems;
+        return {
+          ...state,
+          status: 'succeeded',
+          books: [...state.books, ...items],
+          totalBooks: totalItems,
+        };
       })
       .addCase(fetchBooks.rejected, (state, action) => {
         state.status = 'rejected';
@@ -112,8 +107,8 @@ const booksSlice = createSlice({
           state.error = action.payload;
         } else {
           state.error = {
-            status: 404,
-            statusText: 'Something went wrong',
+            name: 'Rejected',
+            message: 'Something went wrong',
           };
         }
       });

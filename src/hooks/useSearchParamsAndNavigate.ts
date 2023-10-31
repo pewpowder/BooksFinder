@@ -5,11 +5,6 @@ export type SearchParamsType = { [k: string]: string | number };
 
 type ReturnedTuple = [URLSearchParams, (params: SearchParamsType) => void];
 
-/*
-	1. Hook should relocate after searchParams is updated.
-	2. Hook should provide access to searchParams
-	3. Hook should provide updateSearchParams function
-*/
 function useSearchParamsAndNavigate(baseURL: string): ReturnedTuple {
   const [searchParams, setSearchParams] = useSearchParams(
     new URLSearchParams()

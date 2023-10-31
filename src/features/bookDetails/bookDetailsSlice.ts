@@ -1,10 +1,10 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { getUrlFetchSingleBook } from 'services/api';
-import type { Book, BookId, ErrorType } from 'types';
+import { getUrlFetchSingleBook } from 'helpers/api';
+import type { Book, BookId } from 'types';
 
 type InitialState = {
   status: 'idle' | 'pending' | 'succeeded' | 'rejected';
-  error: string | null;
+  error: Error | null;
   book: Book | null;
 };
 
@@ -14,15 +14,23 @@ const initialState: InitialState = {
   book: null,
 };
 
-export const fetchBook = createAsyncThunk<
+type AsyncThunkProps = {
+  bookId: BookId;
+  signal?: AbortSignal;
+};
+
+export const fetchBookDetails = createAsyncThunk<
   Book,
-  BookId,
-  { rejectValue: ErrorType }
->('/fetchBookDetails', async (bookId: BookId, { rejectWithValue }) => {
-  const res = await fetch(getUrlFetchSingleBook(bookId));
+  AsyncThunkProps,
+  { rejectValue: Error }
+>('/fetchBookDetails', async ({ bookId, signal }, { rejectWithValue }) => {
+  const res = await fetch(getUrlFetchSingleBook(bookId), { signal });
 
   if (!res.ok) {
-    return rejectWithValue({ status: res.status, statusText: res.statusText });
+    return rejectWithValue({
+      name: res.status.toString(),
+      message: res.statusText,
+    });
   }
 
   const { id, etag, volumeInfo } = await res.json();
@@ -35,27 +43,35 @@ export const fetchBook = createAsyncThunk<
 });
 
 const bookDetailsSlice = createSlice({
-  name: 'details',
+  name: 'bookDetails',
   initialState,
   reducers: {
-    clearBookDetails: () => initialState,
+    resetBookDetails: () => initialState,
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchBook.pending, (state) => {
+      .addCase(fetchBookDetails.pending, (state) => {
         state.status = 'pending';
       })
-      .addCase(fetchBook.fulfilled, (state, action) => {
-        state.book = action.payload;
+      .addCase(fetchBookDetails.fulfilled, (state, action) => {
         state.status = 'succeeded';
+        state.book = action.payload;
       })
-      .addCase(fetchBook.rejected, (state) => {
+      .addCase(fetchBookDetails.rejected, (state, action) => {
         state.status = 'rejected';
-        state.error = 'Book not found';
+
+        if (action.payload) {
+          state.error = action.payload;
+        } else {
+          state.error = {
+            name: 'Rejected',
+            message: 'Something went wrong',
+          };
+        }
       });
   },
 });
 
-export const { clearBookDetails } = bookDetailsSlice.actions;
+export const { resetBookDetails } = bookDetailsSlice.actions;
 
 export default bookDetailsSlice.reducer;

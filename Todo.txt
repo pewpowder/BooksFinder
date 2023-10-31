@@ -1,15 +1,13 @@
 // Todo
 *. Learn how fetch works.
 *. Implement tests
-*. Check how to correct validate errors in JS.
-*. Remove pages, routing and store folders
 *. Add comments (/**
  * @param baseURL
  * @param params
  * @returns
  */) /** + tab
-*. Revise ??, &&, ||.
-*. SearchParams should be single source of truth
+*. Make common pending for all buttons (BookCard, BookDescription, ErrorRoute and ErrorFallback etc) ??
+*. https://reactrouter.com/en/main/components/scroll-restoration#scrollrestoration- (scroll restoration. Replace my logic with this)
 
 // Completed
 *. Logo should be clickable link that address to home page. +
@@ -31,6 +29,17 @@
 ) +
 *. When page reloads startIndex increases by 12, but it should not be happening. This is occur because we set scrollY from sessionStorage when page loading
 but requesting only 12 books, so scrollY > content height and we scrolled down to the page where request occurs. +
+*. SearchParams should be single source of truth +
+*. Remove pages, routing and store folders +
+*. Revise ??, &&, ||. +
+*. The app is behaving badly, when we search clean code and after lsakgsakg;ksa;gfaksfga; +
+*. To reproduce error: http://localhost:3000/boks. Set the default data-theme="light" body so that styles are applied when we first load page and it fails. +
+*. Which to use ErrorBoundary component or errorElement from react-router-dom, or both? +
+*. Check how to correct validate errors in JS. +
+*. Pre tag for errors +
+*. remove all console.log() +
+*. request books -> change search params id -> close error -> request new books -> click more -> error occur (because resetBookDetails doesn't call) +
+*. Remove reset functions from books and bookDetails slices. Reset books in pending state. +
 
 
 /*

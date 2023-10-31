@@ -1,8 +1,10 @@
 import { Link, Outlet, useNavigate, useOutletContext } from 'react-router-dom';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useAppDispatch } from 'hooks/redux-hooks';
+import { ErrorBoundary } from 'react-error-boundary';
 import SearchPanel from 'components/SearchPanel/SearchPanel';
 import ThemeToggle from 'components/ThemeToggle/ThemeToggle';
+import ErrorFallback from 'components/ErrorFallback/ErrorFallback';
 import {
   type StatusType,
   fetchBooks,
@@ -11,7 +13,7 @@ import {
 import useSearchParamsAndNavigate from 'hooks/useSearchParamsAndNavigate';
 import useScrollY from 'hooks/useScrollY';
 import type { FetchBooksParams } from 'types';
-import { BOOKS_COUNT_REQUESTED_DEFAULT } from 'services/services';
+import { BOOKS_COUNT_REQUESTED_DEFAULT } from 'helpers/services';
 import styles from './App.module.scss';
 
 type ContextType = {
@@ -21,7 +23,7 @@ type ContextType = {
 
 function App() {
   const dispatch = useAppDispatch();
-  const [query, setQuery] = useState('Clean code');
+  const [query, setQuery] = useState('');
   const startIndexRef = useRef(0);
   const booksCountRef = useRef(BOOKS_COUNT_REQUESTED_DEFAULT);
   const navigate = useNavigate();
@@ -45,13 +47,13 @@ function App() {
       };
 
       const controller = new AbortController();
-      const signal = controller.signal;
-      dispatch(fetchBooks({ ...fetchParams, signal }));
+      dispatch(fetchBooks({ ...fetchParams, signal: controller.signal }));
       updateSearchParamsAndNavigate(fetchParams);
 
       return () => {
         controller.abort();
-        navigate(-1); // TODO: Check if it can produce bugs
+        resetPreviousBooks();
+        navigate(-1);
       };
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -85,9 +87,6 @@ function App() {
     const scrolledTop = window.scrollY + screenHeight;
     const threshold = offsetHeight - screenHeight / 3;
 
-    // console.log('handleScroll status', status);
-    // console.log('handleScroll threshold', scrolledTop >= threshold);
-
     if (status !== 'pending' && scrolledTop >= threshold) {
       startIndexRef.current += BOOKS_COUNT_REQUESTED_DEFAULT;
       booksCountRef.current += BOOKS_COUNT_REQUESTED_DEFAULT;
@@ -116,7 +115,11 @@ function App() {
         <Link
           to="/"
           className={styles['home-link']}
-          onClick={resetPreviousBooks}
+          onClick={() => {
+            setQuery('');
+            resetPreviousBooks();
+            navigate('/');
+          }}
         >
           JUTSU
         </Link>
@@ -128,7 +131,9 @@ function App() {
           setQuery={setQuery}
           handleOnSearch={handleOnSearch}
         />
-        <Outlet context={outletContext} />
+        <ErrorBoundary FallbackComponent={ErrorFallback}>
+          <Outlet context={outletContext} />
+        </ErrorBoundary>
       </main>
     </div>
   );

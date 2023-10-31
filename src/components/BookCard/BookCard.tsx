@@ -1,15 +1,11 @@
 import { Link } from 'react-router-dom';
-import type { Book } from 'types';
 import NotFoundImg from 'assets/img/not-found.png';
+import type { Book } from 'types';
 import styles from './BookCard.module.scss';
 
 interface BookCardProps extends Book {}
 
 function BookCard({ id, volumeInfo }: BookCardProps) {
-  if (!volumeInfo) {
-    throw new Error('No book info');
-  }
-
   const { authors, imageLinks, publishedDate, publisher, title } = volumeInfo;
 
   return (

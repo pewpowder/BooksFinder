@@ -1,6 +1,8 @@
+import { useEffect } from 'react';
 import { useAppSelector } from 'hooks/redux-hooks';
 import BookCard from 'components/BookCard/BookCard';
 import Spinner from 'components/Spinner/Spinner';
+import ErrorFallback from 'components/ErrorFallback/ErrorFallback';
 import {
   selectAllBooks,
   selectBooksError,
@@ -8,8 +10,7 @@ import {
   selectTotalBooks,
 } from 'features/books/booksSelectors';
 import { useTypedOutletContext } from 'components/App/App';
-import { useEffect } from 'react';
-import { throttle } from 'services/services';
+import { throttle } from 'helpers/services';
 import styles from './BookCardList.module.scss';
 
 function BookCardList() {
@@ -34,36 +35,37 @@ function BookCardList() {
     window.scrollTo(0, scrolledY);
   });
 
+  if (status === 'idle') {
+    return null;
+  }
+
   if (status === 'pending') {
     return <Spinner />;
   }
 
   if (status === 'rejected') {
-    return (
-      <div>
-        <span>status - {error?.status || error?.name || 'unknown'}</span>
-        <span>{error?.statusText || 'unknown'}</span>
-      </div>
-    );
+    console.log('BookCardList rejected');
+
+    return <ErrorFallback error={error} />;
   }
 
-  if (totalBooks === 0 && status === 'succeeded') {
+  console.log(books.length);
+
+  if (books.length === 0) {
     return <div>Oops, looks like no books were found</div>;
   }
 
   return (
-    totalBooks !== 0 && (
-      <section>
-        <span className={styles['books-count']}>
-          About {totalBooks} books found
-        </span>
-        <div className={styles['card-list']}>
-          {books.map((book) => (
-            <BookCard key={book.etag} {...book} />
-          ))}
-        </div>
-      </section>
-    )
+    <section>
+      <span className={styles['books-count']}>
+        About {totalBooks} books found
+      </span>
+      <div className={styles['card-list']}>
+        {books.map((book) => (
+          <BookCard key={book.etag} {...book} />
+        ))}
+      </div>
+    </section>
   );
 }
 
