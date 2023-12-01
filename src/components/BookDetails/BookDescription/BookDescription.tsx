@@ -9,12 +9,13 @@ interface BookDescriptionProps {
 function BookDescription({ description, previewLink }: BookDescriptionProps) {
   const navigate = useNavigate();
 
+  // TODO: Check if the previous route contains our URL then navigate there otherwise navigate to / main page (it for cases when the user came from other pages by link)
   return (
     <div>
       <article className={styles['description']}>
         <h2 className={styles['description-title']}>Book Description</h2>
         <p className={styles['description-text']}>
-          {description ?? 'no description'}
+          {description || 'no description'}
         </p>
         <div className={styles['links-wrapper']}>
           <button
@@ -24,7 +25,7 @@ function BookDescription({ description, previewLink }: BookDescriptionProps) {
             {'< Back'}
           </button>
           <a
-            href={previewLink}
+            href={previewLink ?? ''}
             target="_blank"
             rel="noreferrer"
             className={`

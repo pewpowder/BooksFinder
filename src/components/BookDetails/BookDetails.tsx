@@ -8,6 +8,7 @@ import {
   selectBookDetailsError,
   selectBookDetailsStatus,
 } from 'features/bookDetails/bookDetailsSelectors';
+import type { Book } from 'types';
 import useBookDetails from 'features/bookDetails/useBookDetails';
 import styles from './BookDetails.module.scss';
 
@@ -25,13 +26,11 @@ function BookDetails() {
     return <Spinner />;
   }
 
-  if (status === 'rejected' || !book) {
-    console.log('status REJECTED');
-
+  if (status === 'rejected') {
     return <ErrorFallback error={error} />;
   }
 
-  const { volumeInfo } = book;
+  const { volumeInfo } = book as Book;
   const { description, previewLink } = volumeInfo;
   return (
     <section className={styles['container']}>

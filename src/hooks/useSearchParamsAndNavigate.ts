@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 
+// TODO: Remove type number. Remain only string.
 export type SearchParamsType = { [k: string]: string | number };
 
 type ReturnedTuple = [URLSearchParams, (params: SearchParamsType) => void];
@@ -10,6 +11,17 @@ function useSearchParamsAndNavigate(baseURL: string): ReturnedTuple {
     new URLSearchParams()
   );
   const navigate = useNavigate();
+
+  const updateSearchParams = (searchParams: SearchParamsType) => {
+    const paramsWithoutNumbers = Object.entries(searchParams).map(
+      ([key, value]) =>
+        typeof value === 'string' ? [key, value] : [key, value.toString()]
+    );
+
+    setSearchParams(
+      new URLSearchParams(Object.fromEntries(paramsWithoutNumbers))
+    );
+  };
 
   const navigateWithSearchParams = (searchParams: SearchParamsType) => {
     let url = '';
@@ -21,17 +33,6 @@ function useSearchParamsAndNavigate(baseURL: string): ReturnedTuple {
     }
 
     navigate(url);
-  };
-
-  const updateSearchParams = (searchParams: SearchParamsType) => {
-    const paramsWithoutNumbers = Object.entries(searchParams).map(
-      ([key, value]) =>
-        typeof value === 'string' ? [key, value] : [key, value.toString()]
-    );
-
-    setSearchParams(
-      new URLSearchParams(Object.fromEntries(paramsWithoutNumbers))
-    );
   };
 
   const updateSearchParamsAndNavigate = useCallback(

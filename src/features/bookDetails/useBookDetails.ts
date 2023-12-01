@@ -10,15 +10,16 @@ function useBookDetails(bookId: BookId | undefined): Book | null {
 
   useEffect(() => {
     if (bookId) {
-      const controller = new AbortController();
-      dispatch(fetchBookDetails({ bookId, signal: controller.signal }));
+      // const controller = new AbortController();
+      dispatch(fetchBookDetails({ bookId, signal: undefined }));
 
       return () => {
         dispatch(resetBookDetails());
-        controller.abort();
+        // controller.abort();
       };
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return book;

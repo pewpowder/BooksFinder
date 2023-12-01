@@ -33,3 +33,37 @@ export type FetchBooksParams = {
   startIndex: number;
   booksCount: number;
 };
+
+export type StatusType = 'idle' | 'pending' | 'succeeded' | 'rejected';
+
+export type ContextType = {
+  scrolledY: number;
+  handleScroll: (status: StatusType) => void;
+};
+
+type APIErrorErrors = {
+  message: string;
+  domain: string;
+  reason: string;
+  locationType: string,
+  location: string,
+};
+
+type APIErrorDetails = {
+  '@type': string;
+  reason: string;
+  domain: string;
+  metadata: {
+    service: string;
+  };
+};
+
+export type APIResponseError = {
+  code: number;
+  message: string;
+  errors: APIErrorErrors[];
+  details: APIErrorDetails[];
+  status?: string;
+};
+
+export type StateError = Error | APIResponseError | null;

@@ -5,12 +5,11 @@ function ThemeToggle() {
   const [theme, toggleTheme] = useTheme();
 
   return (
-    <label className={styles['toggler']} htmlFor="themeToggle">
+    <label className={styles['toggler']}>
       <input
         type="checkbox"
-        id="themeToggle"
         checked={theme === 'light' ? false : true}
-        onChange={(e) => toggleTheme()}
+        onChange={() => toggleTheme()}
       />
       <span className={styles['slider']}></span>
     </label>

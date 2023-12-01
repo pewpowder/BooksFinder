@@ -17,36 +17,37 @@ function BookDetailsCard({ volumeInfo }: BookDetailsCardProps) {
     title,
   } = volumeInfo;
 
+  // TODO: Should I replace article tag with details tag?
   return (
     <article className={styles['card']}>
       <h5 className={styles['card-title']}>{title}</h5>
       <img
         className={styles['card-img']}
-        src={imageLinks?.thumbnail ?? NotFoundImg}
-        alt="cover book"
+        src={imageLinks?.thumbnail || NotFoundImg}
+        alt="book cover"
       />
       <ul className={styles['card-list']}>
         <li className={styles['card-list-item']}>
-          <span>Authors:</span> {authors ?? 'unknown'}
+          <span>Authors:</span> {authors || 'unknown'}
         </li>
         <li className={styles['card-list-item']}>
           <span>Published date:</span>
-          <time> {publishedDate ?? 'unknown'}</time>
+          <time> {publishedDate || 'unknown'}</time>
         </li>
         <li className={styles['card-list-item']}>
-          <span>Publisher:</span> {publisher ?? 'unknown'}
+          <span>Publisher:</span> {publisher || 'unknown'}
         </li>
         <li className={styles['card-list-item']}>
-          <span>Numbers of page:</span> {pageCount ?? 'unknown'}
+          <span>Numbers of page:</span> {pageCount || 'unknown'}
         </li>
         <li className={styles['card-list-item']}>
-          <span>Language:</span> {language ?? 'unknown'}
+          <span>Language:</span> {language || 'unknown'}
         </li>
         <li className={styles['card-list-item']}>
-          <span>Categories:</span> {categories ?? 'unknown'}
+          <span>Categories:</span> {categories || 'unknown'}
         </li>
         <li className={styles['card-list-item']}>
-          <span>Rating (avg):</span> {averageRating ?? 'unknown'}
+          <span>Rating (avg):</span> {averageRating || 'unknown'}
         </li>
       </ul>
     </article>

@@ -1,10 +1,11 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { getUrlFetchSingleBook } from 'helpers/api';
-import type { Book, BookId } from 'types';
+import type { APIResponseError, Book, BookId, StateError, StatusType } from 'types';
+import { isError } from 'helpers/helpers';
 
 type InitialState = {
-  status: 'idle' | 'pending' | 'succeeded' | 'rejected';
-  error: Error | null;
+  status: StatusType;
+  error: StateError;
   book: Book | null;
 };
 
@@ -22,15 +23,14 @@ type AsyncThunkProps = {
 export const fetchBookDetails = createAsyncThunk<
   Book,
   AsyncThunkProps,
-  { rejectValue: Error }
+  { rejectValue: NonNullable<StateError> }
 >('/fetchBookDetails', async ({ bookId, signal }, { rejectWithValue }) => {
   const res = await fetch(getUrlFetchSingleBook(bookId), { signal });
 
   if (!res.ok) {
-    return rejectWithValue({
-      name: res.status.toString(),
-      message: res.statusText,
-    });
+    const { error }: { error: APIResponseError } = await res.json();
+
+    return rejectWithValue(error);
   }
 
   const { id, etag, volumeInfo } = await res.json();
@@ -58,16 +58,14 @@ const bookDetailsSlice = createSlice({
         state.book = action.payload;
       })
       .addCase(fetchBookDetails.rejected, (state, action) => {
-        state.status = 'rejected';
+        state.status = 'rejected'
+        const { payload, error } = action;
+        const defaultError: Error = {
+          name: 'Rejected',
+          message: 'Something went wrong',
+        };
 
-        if (action.payload) {
-          state.error = action.payload;
-        } else {
-          state.error = {
-            name: 'Rejected',
-            message: 'Something went wrong',
-          };
-        }
+        state.error = payload ? payload : isError(error) ? error : defaultError;
       });
   },
 });

@@ -9,6 +9,12 @@
 *. Make common pending for all buttons (BookCard, BookDescription, ErrorRoute and ErrorFallback etc) ??
 *. https://reactrouter.com/en/main/components/scroll-restoration#scrollrestoration- (scroll restoration. Replace my logic with this)
 *. remove all console.log()
+*. filter content that returned by the server
+*. (query: gfsdg). When books run out, it server does not send items, you need to process and not send requests and display a notification
+
+// TEST RULES
+*. I should clear mocks, data and other after the test and I should prepare them before the test.
+*. search books > open book details > click logo > click back navigate button in the browser x2 > click back button on the page > no books
 
 // Completed
 *. Logo should be clickable link that address to home page. +

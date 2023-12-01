@@ -1,14 +1,18 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import type { RootState } from 'store';
-import type { Book, BookResponse, FetchBooksParams } from 'types';
-import { generatePromises } from 'helpers/services';
-
-export type StatusType = 'idle' | 'pending' | 'succeeded' | 'rejected';
+import { type RootState } from 'store';
+import type {
+  Book,
+  BookResponse,
+  FetchBooksParams,
+  StateError,
+  StatusType,
+} from 'types';
+import { generatePromises, isAPIResponseError, isError } from 'helpers/helpers';
 
 type InitialState = {
   books: Book[];
   status: StatusType;
-  error: Error | null;
+  error: StateError;
   totalBooks: number;
 };
 
@@ -23,21 +27,17 @@ type AsyncThunkProps = {
   signal?: AbortSignal;
 } & FetchBooksParams;
 
-export const fetchBooks = createAsyncThunk<
-  BookResponse,
-  AsyncThunkProps,
-  {
-    rejectValue: Error;
-    state: RootState;
-  }
->('books/fetchBooks', async (props, { rejectWithValue, getState }) => {
+const handleBooksRequest = async (
+  props: AsyncThunkProps,
+  booksState: InitialState
+) => {
   const { query, startIndex, booksCount, signal } = props;
   const formattedQuery = query.trim().split(' ').join('+');
-  const books = getState().books.books;
+  const books = booksState.books;
 
   const items: Book[] = [];
   let totalItems = 0;
-  const reasons: string[] = [];
+  const reasons: NonNullable<StateError>[] = [];
 
   const allSettledResult = await Promise.allSettled(
     generatePromises({
@@ -52,24 +52,58 @@ export const fetchBooks = createAsyncThunk<
     const response = allSettledResult[i];
 
     if (response.status === 'fulfilled') {
-      const json = await response.value.json();
+      const { error, ...json } = await response.value.json();
+
+      if (isAPIResponseError(error)) {
+        reasons.push(error);
+        continue;
+      }
+
       if (json.items) {
         items.push(...json.items);
         totalItems = json.totalItems;
       }
     } else {
-      reasons.push(`Promise ${i} rejected due to - ${response.reason}`);
+      if (isError(response.reason)) {
+        reasons.push(response.reason);
+      } else {
+        const error: Error = await response.reason.json();
+        reasons.push(error);
+      }
     }
   }
 
-  if (reasons.length === allSettledResult.length) {
+  return {
+    items,
+   totalItems,
+    reasons,
+    isAllRequestsRejected: reasons.length === allSettledResult.length,
+  };
+};
+
+export const fetchBooks = createAsyncThunk<
+  BookResponse,
+  AsyncThunkProps,
+  {
+    rejectValue: NonNullable<StateError>;
+    state: RootState;
+  }
+>('books/fetchBooks', async (props, { rejectWithValue, getState }) => {
+  const booksState = getState().books;
+
+  const { items, totalItems, reasons, isAllRequestsRejected } =
+    await handleBooksRequest(props, booksState);
+
+  if (isAllRequestsRejected) {
     let message = '';
-    reasons.forEach((reason) => {
-      message += `${reason} \n`;
+    reasons.forEach((reason, i) => {
+      message += `Request ${i} rejected with message: ${reason.message} \n`;
     });
 
+    reasons.forEach((reason) => console.error(reason));
+
     return rejectWithValue({
-      name: 'Request rejected',
+      name: 'Requests rejected',
       message,
     });
   }
@@ -103,14 +137,13 @@ const booksSlice = createSlice({
       })
       .addCase(fetchBooks.rejected, (state, action) => {
         state.status = 'rejected';
-        if (action.payload) {
-          state.error = action.payload;
-        } else {
-          state.error = {
-            name: 'Rejected',
-            message: 'Something went wrong',
-          };
-        }
+        const { error, payload } = action;
+        const defaultError: Error = {
+          name: 'Rejected',
+          message: 'Something went wrong',
+        };
+
+        state.error = payload ? payload : isError(error) ? error : defaultError;
       });
   },
 });

@@ -1,37 +1,38 @@
+import { StateError } from 'types';
 import styles from './ErrorFallback.module.scss';
+import { isError, isAPIResponseError } from 'helpers/helpers';
 
 interface ErrorFallbackProps {
-  error: Error | null;
+  error: StateError;
 }
 
 function ErrorFallback({ error }: ErrorFallbackProps) {
-  let name = '';
-  let message = '';
+  let name = 'unknown';
+  let message = 'Something went wrong.';
 
-  if (error) {
+  if (isError(error)) {
     name = error.name;
     message = error.message;
 
     console.error(error.stack);
   }
 
+  if(isAPIResponseError(error)) {
+    name = error.status || 'unknown';
+    message = error.message;
+
+    console.error(error.code, error.errors);
+  }
+
   return (
-    <div className={styles['container']}>
-      <h3 className={styles['error-name']}>{name || 'unknown'}</h3>
+    <div className={styles['container']} role="alert">
+      <h3 className={styles['error-name']}>{name}</h3>
       <pre className={styles['error-message']}>
-        {message || 'Something went wrong.'}
+        {message}
         {'\nPlease try again!'}
       </pre>
     </div>
   );
 }
-
-// export const isErrorType = (error: unknown): error is Error => {
-//   if (!error || typeof error !== 'object') {
-//     return false;
-//   }
-
-//   return 'name' in error && 'message' in error;
-// };
 
 export default ErrorFallback;

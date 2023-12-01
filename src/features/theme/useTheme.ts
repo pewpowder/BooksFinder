@@ -3,11 +3,10 @@ import { setTheme, selectTheme, Themes } from './themeSlice';
 import { useAppDispatch, useAppSelector } from 'hooks/redux-hooks';
 
 function useTheme(): [Themes, () => void] {
-	const { theme } = useAppSelector(selectTheme);
 	const dispatch = useAppDispatch();
+	const { theme } = useAppSelector(selectTheme);
 
-	const toggleTheme = () =>
-		dispatch(setTheme(theme === 'light' ? 'dark' : 'light'));
+	const toggleTheme = () => dispatch(setTheme(theme === 'light' ? 'dark' : 'light'));
 
 	useEffect(() => {
 		document.body.setAttribute('data-theme', theme);

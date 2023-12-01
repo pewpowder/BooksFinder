@@ -1,5 +1,6 @@
 import { FetchBooksParams } from 'types';
 import { getUrlFetchBooks } from './api';
+import type { APIResponseError } from 'types'
 
 export const throttle = <T extends (...args: Parameters<T>) => any>(
   fn: T,
@@ -15,6 +16,7 @@ export const throttle = <T extends (...args: Parameters<T>) => any>(
     }
 
     fn(...args);
+
     isRunning = true;
 
     const timerId = setTimeout(() => {
@@ -32,7 +34,7 @@ export const MAX_BOOKS_PER_REQUEST = 40; // 40 is the max value the server can r
 
 export const BOOKS_COUNT_REQUESTED_DEFAULT = 12;
 
-export const MAX_BOOKS_COUNT_SEVERAL_REQUESTS = 200; // When sending too many requests google books api limits the requests (P.S. 200 is random value).
+export const MAX_BOOKS_COUNT_SEVERAL_REQUESTS = 200; // When sending too many requests google books api limits the requests (P.S. 200 is a random value).
 
 type FetchParams = {
   signal?: AbortSignal;
@@ -50,8 +52,8 @@ export const generatePromises = (fetchParams: FetchParams) => {
       : booksCount;
 
   const promises: Promise<Response>[] = [];
-  const requestCounts = Math.ceil(booksCount / MAX_BOOKS_PER_REQUEST);
-  for (let i = 0; i < requestCounts; i++) {
+  const requestsCount = Math.ceil(booksCount / MAX_BOOKS_PER_REQUEST);
+  for (let i = 0; i < requestsCount; i++) {
     promises[i] = fetch(
       getUrlFetchBooks({
         query,
@@ -73,3 +75,19 @@ export const generatePromises = (fetchParams: FetchParams) => {
 
   return promises;
 };
+
+export const isError = (error: unknown): error is Error => {
+  if(!error || typeof error !== 'object') {
+    return false;
+  }
+
+  return 'message' in error && 'name' in error;
+}
+
+export const isAPIResponseError = (error: unknown): error is APIResponseError => {
+  if(!error || typeof error !== 'object') {
+    return false;
+  }
+
+  return 'code' in error && 'message' in error && 'errors' in error;
+}

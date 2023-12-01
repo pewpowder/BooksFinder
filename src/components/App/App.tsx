@@ -6,20 +6,16 @@ import SearchPanel from 'components/SearchPanel/SearchPanel';
 import ThemeToggle from 'components/ThemeToggle/ThemeToggle';
 import ErrorFallback from 'components/ErrorFallback/ErrorFallback';
 import {
-  type StatusType,
   fetchBooks,
   resetBooks,
 } from 'features/books/booksSlice';
 import useSearchParamsAndNavigate from 'hooks/useSearchParamsAndNavigate';
 import useScrollY from 'hooks/useScrollY';
-import type { FetchBooksParams } from 'types';
-import { BOOKS_COUNT_REQUESTED_DEFAULT } from 'helpers/services';
+import type { ContextType, FetchBooksParams, StatusType } from 'types';
+import { BOOKS_COUNT_REQUESTED_DEFAULT } from 'helpers/helpers';
 import styles from './App.module.scss';
 
-type ContextType = {
-  scrolledY: number;
-  handleScroll: (status: StatusType) => void;
-};
+
 
 function App() {
   const dispatch = useAppDispatch();
@@ -28,7 +24,7 @@ function App() {
   const booksCountRef = useRef(BOOKS_COUNT_REQUESTED_DEFAULT);
   const navigate = useNavigate();
 
-  const [scrolledY, setScrolledY] = useScrollY(); // [scrolledY, setScrolledY] defined inside HomePage so that users see same client view when they returning from BookDetails component.
+  const [scrolledY, setScrolledY] = useScrollY();
   const [searchParams, updateSearchParamsAndNavigate] =
     useSearchParamsAndNavigate('/books');
 

@@ -10,7 +10,7 @@ import {
   selectTotalBooks,
 } from 'features/books/booksSelectors';
 import { useTypedOutletContext } from 'components/App/App';
-import { throttle } from 'helpers/services';
+import { throttle } from 'helpers/helpers';
 import styles from './BookCardList.module.scss';
 
 function BookCardList() {
@@ -28,8 +28,8 @@ function BookCardList() {
     return () => {
       window.removeEventListener('scroll', throttledHandleScroll);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [status]);
+
+  }, [status, handleScroll]);
 
   useEffect(() => {
     window.scrollTo(0, scrolledY);
@@ -44,12 +44,8 @@ function BookCardList() {
   }
 
   if (status === 'rejected') {
-    console.log('BookCardList rejected');
-
     return <ErrorFallback error={error} />;
   }
-
-  console.log(books.length);
 
   if (books.length === 0) {
     return <div>Oops, looks like no books were found</div>;
