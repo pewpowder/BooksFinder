@@ -2,7 +2,7 @@
   "name": "search-book",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://pewpowder.github.io",
+  "homepage": "https://pewpowder.github.io/SearchBooks",
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.5",
     "@testing-library/jest-dom": "^6.1.3",
