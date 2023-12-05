@@ -14,6 +14,7 @@ type InitialState = {
   status: StatusType;
   error: StateError;
   totalBooks: number;
+  isBooksOver: boolean,
 };
 
 const initialState: InitialState = {
@@ -21,11 +22,8 @@ const initialState: InitialState = {
   status: 'idle',
   error: null,
   totalBooks: 0,
+  isBooksOver: false,
 };
-
-type AsyncThunkProps = {
-  signal?: AbortSignal;
-} & FetchBooksParams;
 
 const handleBooksRequest = async (
   props: AsyncThunkProps,
@@ -75,14 +73,22 @@ const handleBooksRequest = async (
 
   return {
     items,
-   totalItems,
+    totalItems,
     reasons,
     isAllRequestsRejected: reasons.length === allSettledResult.length,
   };
 };
 
+type AsyncThunkProps = {
+  signal?: AbortSignal;
+} & FetchBooksParams;
+
+type AsyncThunkReturnType = {
+  isBooksOver: boolean,
+} & BookResponse
+
 export const fetchBooks = createAsyncThunk<
-  BookResponse,
+  AsyncThunkReturnType,
   AsyncThunkProps,
   {
     rejectValue: NonNullable<StateError>;
@@ -97,10 +103,9 @@ export const fetchBooks = createAsyncThunk<
   if (isAllRequestsRejected) {
     let message = '';
     reasons.forEach((reason, i) => {
+      console.error(reason)
       message += `Request ${i} rejected with message: ${reason.message} \n`;
     });
-
-    reasons.forEach((reason) => console.error(reason));
 
     return rejectWithValue({
       name: 'Requests rejected',
@@ -111,6 +116,7 @@ export const fetchBooks = createAsyncThunk<
   return {
     items,
     totalItems,
+    isBooksOver: totalItems === 0 ? true : false,
   };
 });
 
@@ -126,13 +132,14 @@ const booksSlice = createSlice({
         state.status = 'pending';
       })
       .addCase(fetchBooks.fulfilled, (state, action) => {
-        const { items, totalItems } = action.payload;
+        const { items, totalItems, isBooksOver } = action.payload;
 
         return {
           ...state,
           status: 'succeeded',
           books: [...state.books, ...items],
           totalBooks: totalItems,
+          isBooksOver,
         };
       })
       .addCase(fetchBooks.rejected, (state, action) => {

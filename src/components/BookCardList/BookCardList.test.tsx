@@ -1,4 +1,4 @@
-import { fireEvent, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { type PreloadedRootState } from 'store';
 import { testBooks } from 'tests/mock/mockBooks';
@@ -32,6 +32,7 @@ describe('BookCardList component', () => {
         totalBooks: testBooks.totalItems,
         status: 'succeeded',
         error: null,
+        isBooksOver: false,
       },
     };
 
@@ -50,6 +51,7 @@ describe('BookCardList component', () => {
         totalBooks: testBooks.totalItems,
         status: 'succeeded',
         error: null,
+        isBooksOver: false,
       },
       bookDetails: {
         book: null,
@@ -75,6 +77,7 @@ describe('BookCardList component', () => {
         totalBooks: 0,
         status: 'idle',
         error: null,
+        isBooksOver: false,
       },
     };
 
@@ -93,6 +96,7 @@ describe('BookCardList component', () => {
         totalBooks: 0,
         status: 'pending',
         error: null,
+        isBooksOver: false,
       },
     };
 
@@ -111,6 +115,7 @@ describe('BookCardList component', () => {
         totalBooks: 0,
         status: 'rejected',
         error: null,
+        isBooksOver: false,
       },
     };
 
@@ -129,6 +134,7 @@ describe('BookCardList component', () => {
         totalBooks: 0,
         status: 'succeeded',
         error: null,
+        isBooksOver: false,
       },
     };
 

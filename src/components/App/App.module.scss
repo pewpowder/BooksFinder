@@ -16,3 +16,15 @@
 	color: var(--colors-text);
 	text-decoration: none;
 }
+
+.books-over {
+	border: 1px solid var(--colors-border);
+	border-radius: var(--radius);
+
+	font-size: var(--fs-lg);
+	text-align: center;
+
+	box-shadow: var(--shadow);
+	margin-top: 1rem;
+	padding: 1rem;
+}

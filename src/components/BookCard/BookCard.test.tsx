@@ -13,6 +13,7 @@ describe('BookCard component', () => {
         error: null,
         status: 'succeeded',
         totalBooks: 1,
+        isBooksOver: false,
       },
     };
 
@@ -51,6 +52,7 @@ describe('BookCard component', () => {
         error: null,
         status: 'succeeded',
         totalBooks: 0,
+        isBooksOver: false,
       },
     };
 

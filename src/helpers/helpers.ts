@@ -1,6 +1,6 @@
 import { FetchBooksParams } from 'types';
 import { getUrlFetchBooks } from './api';
-import type { APIResponseError } from 'types'
+import type { APIResponseError, Book } from 'types';
 
 export const throttle = <T extends (...args: Parameters<T>) => any>(
   fn: T,
@@ -77,17 +77,44 @@ export const generatePromises = (fetchParams: FetchParams) => {
 };
 
 export const isError = (error: unknown): error is Error => {
-  if(!error || typeof error !== 'object') {
+  if (!error || typeof error !== 'object') {
     return false;
   }
 
   return 'message' in error && 'name' in error;
-}
+};
 
-export const isAPIResponseError = (error: unknown): error is APIResponseError => {
-  if(!error || typeof error !== 'object') {
+export const isAPIResponseError = (
+  error: unknown
+): error is APIResponseError => {
+  if (!error || typeof error !== 'object') {
     return false;
   }
 
   return 'code' in error && 'message' in error && 'errors' in error;
-}
+};
+
+const isVolumeInfoHasKey = (key: string) => {
+  const book: Book = {
+    id: '',
+    etag: '',
+    volumeInfo: {
+      title: '',
+      authors: [],
+      averageRating: 0,
+      categories: [],
+      description: '',
+      imageLinks: {
+        smallThumbnail: '',
+        thumbnail: '',
+      },
+      language: '',
+      pageCount: 0,
+      previewLink: '',
+      publishedDate: '',
+      publisher: '',
+    },
+  };
+
+  return key in book || key in book.volumeInfo;
+};

@@ -1,28 +1,25 @@
 import { Link, Outlet, useNavigate, useOutletContext } from 'react-router-dom';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useAppDispatch } from 'hooks/redux-hooks';
+import { useAppDispatch, useAppSelector } from 'hooks/redux-hooks';
 import { ErrorBoundary } from 'react-error-boundary';
 import SearchPanel from 'components/SearchPanel/SearchPanel';
 import ThemeToggle from 'components/ThemeToggle/ThemeToggle';
 import ErrorFallback from 'components/ErrorFallback/ErrorFallback';
-import {
-  fetchBooks,
-  resetBooks,
-} from 'features/books/booksSlice';
+import { fetchBooks, resetBooks } from 'features/books/booksSlice';
 import useSearchParamsAndNavigate from 'hooks/useSearchParamsAndNavigate';
 import useScrollY from 'hooks/useScrollY';
 import type { ContextType, FetchBooksParams, StatusType } from 'types';
 import { BOOKS_COUNT_REQUESTED_DEFAULT } from 'helpers/helpers';
+import { selectIsBooksOver } from 'features/books/booksSelectors';
 import styles from './App.module.scss';
-
-
 
 function App() {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const [query, setQuery] = useState('');
   const startIndexRef = useRef(0);
   const booksCountRef = useRef(BOOKS_COUNT_REQUESTED_DEFAULT);
-  const navigate = useNavigate();
+  const isBooksOver = useAppSelector(selectIsBooksOver);
 
   const [scrolledY, setScrolledY] = useScrollY();
   const [searchParams, updateSearchParamsAndNavigate] =
@@ -56,8 +53,10 @@ function App() {
   }, []);
 
   const requestBooks = (fetchParams: FetchBooksParams) => {
-    updateSearchParamsAndNavigate(fetchParams);
-    dispatch(fetchBooks(fetchParams));
+    if (!isBooksOver) {
+      updateSearchParamsAndNavigate(fetchParams);
+      dispatch(fetchBooks(fetchParams));
+    }
   };
 
   const resetPreviousBooks = () => {
@@ -98,7 +97,7 @@ function App() {
     },
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [query, setScrolledY]
+    [query, setScrolledY, isBooksOver]
   );
 
   const outletContext = useMemo(() => {
@@ -133,6 +132,11 @@ function App() {
         <ErrorBoundary FallbackComponent={ErrorFallback}>
           <Outlet context={outletContext} />
         </ErrorBoundary>
+        {isBooksOver && (
+          <div className={styles['books-over']}>
+            The books for this request have ended
+          </div>
+        )}
       </main>
     </div>
   );

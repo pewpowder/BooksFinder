@@ -28,7 +28,6 @@ function BookCardList() {
     return () => {
       window.removeEventListener('scroll', throttledHandleScroll);
     };
-
   }, [status, handleScroll]);
 
   useEffect(() => {

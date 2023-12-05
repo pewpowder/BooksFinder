@@ -124,6 +124,7 @@ describe.only('BookDetails', () => {
         error: null,
         status: 'succeeded',
         totalBooks: testBooks.totalItems,
+        isBooksOver: false,
       },
       bookDetails: {
         book: testBook,

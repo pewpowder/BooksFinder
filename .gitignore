@@ -7,7 +7,7 @@
 .idea
 .vscode
 notes.txt
-Todo.txt
+todo.txt
 
 # dependencies
 /node_modules
