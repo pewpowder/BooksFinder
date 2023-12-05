@@ -93,28 +93,3 @@ export const isAPIResponseError = (
 
   return 'code' in error && 'message' in error && 'errors' in error;
 };
-
-const isVolumeInfoHasKey = (key: string) => {
-  const book: Book = {
-    id: '',
-    etag: '',
-    volumeInfo: {
-      title: '',
-      authors: [],
-      averageRating: 0,
-      categories: [],
-      description: '',
-      imageLinks: {
-        smallThumbnail: '',
-        thumbnail: '',
-      },
-      language: '',
-      pageCount: 0,
-      previewLink: '',
-      publishedDate: '',
-      publisher: '',
-    },
-  };
-
-  return key in book || key in book.volumeInfo;
-};

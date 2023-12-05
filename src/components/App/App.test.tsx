@@ -13,13 +13,12 @@ describe('App', () => {
   let mockedFetch: jest.Mock;
   const { items, totalItems } = testBooks;
   const responseErrorMessage = new RegExp(`${responseError.message}`, 'i');
+  const dataWithoutBooks: typeof testBooks = {
+    items: [],
+    totalItems,
+  };
 
   beforeEach(() => {
-    const dataWithoutBooks: typeof testBooks = {
-      items: [],
-      totalItems,
-    };
-
     mockedFetch = mockResolvedOnceFetch(testBooks, dataWithoutBooks);
   });
 
@@ -112,5 +111,28 @@ describe('App', () => {
     userEvent.click(screen.getByRole('button', { name: /search/i }));
 
     expect(await screen.findByText(responseErrorMessage)).toBeInTheDocument();
+  });
+
+  test('should not send a request when a user scrolling page to the end if the api responds with totalItems = 0 before that', async () => {
+    const data = {
+      ...testBooks,
+      totalItems: 0,
+    };
+
+    mockedFetch.mockRestore();
+    const newMockedFetch = mockResolvedOnceFetch(data, dataWithoutBooks);
+
+    renderWithReduxAndRouter({
+      routes: ['/'],
+    });
+
+    await userEvent.type(screen.getByRole('searchbox'), 'Query');
+    userEvent.click(screen.getByRole('button', { name: /search/i }));
+
+    await waitFor(() => expect(newMockedFetch).toBeCalledTimes(1));
+
+    fireEvent.scroll(window, { target: { scrollY: 0 } });
+
+    await waitFor(() => expect(newMockedFetch).toBeCalledTimes(1));
   });
 });
