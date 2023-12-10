@@ -2,6 +2,10 @@
 
 The app will help you find any book you want, the search is done through Google Books Api. You can find your favorite book by title, author or publisher.
 
+You can try this app at the following link: https://pewpowder.github.io/BooksFinder
+
+If you want to use this app locally go to the Prerequisites item
+
 ## Overview
 
 ## Built with
